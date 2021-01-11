@@ -7,7 +7,7 @@
         "root": ["./src"],
         "alias": {
           "assets": "./src/assets",
-          "data": "./src/data",
+          "api": "./src/api",
           "sections": "./src/sections",
           "navigation": "./src/navigation",
           "shared": "./src/shared"
