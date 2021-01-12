@@ -1,16 +1,26 @@
 import React from 'react';
-import {View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
+import {ThemeProvider} from '@shopify/restyle';
 import {RootNavigator} from 'navigation/RootNavigator';
+import {theme} from 'shared/theme';
+import {Box} from 'shared/components/Box';
 
-const App = () => {
+const StyledApp = () => {
   return (
-    <View style={{flex: 1}}>
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
-    </View>
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   );
 };
 
-export default App;
+const App = () => {
+  return (
+    <Box flex={1}>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </Box>
+  );
+};
+
+export default StyledApp;
