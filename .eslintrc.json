@@ -8,6 +8,8 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "quotes": ["error", "single"]
+    "quotes": ["error", "single"],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"]
   }
 }
