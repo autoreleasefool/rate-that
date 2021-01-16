@@ -28,7 +28,7 @@ interface HomeQueryRow {
   ratingCreatedAt: string;
 }
 
-export const useNotebooks = ({filter, sortOrder}: HomeQueryProps): HomeQueryResults => {
+export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResults => {
   const whereClause = filter ? `WHERE Notebook.title LIKE '%${filter}%'` : '';
   const orderByClause = buildOrderByClause(sortOrder ?? SortOrder.RECENTLY_UPDATED);
 
