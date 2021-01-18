@@ -4,6 +4,7 @@ import {ThemeProvider} from '@shopify/restyle';
 import {RootNavigator} from 'navigation/RootNavigator';
 import {Box} from 'shared/components/Box';
 import {theme} from 'shared/theme';
+import {EventBusContainer} from 'shared/util/EventBus';
 
 const StyledApp = () => {
   return (
@@ -16,9 +17,11 @@ const StyledApp = () => {
 const App = () => {
   return (
     <Box flex={1}>
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
+      <EventBusContainer>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </EventBusContainer>
     </Box>
   );
 };
