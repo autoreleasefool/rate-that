@@ -40,6 +40,7 @@ export const HomeScreen = ({navigation}: Props) => {
       <FlatList
         data={notebooks}
         renderItem={({item}) => <NotebookRowView notebook={item} />}
+        keyExtractor={({id}) => `${id}`}
         refreshControl={<RefreshControl refreshing={isLoading || isRefreshing} onRefresh={refresh} />}
         ItemSeparatorComponent={Divider}
         ListEmptyComponent={<EmptyStateView title="No notebooks found" />}

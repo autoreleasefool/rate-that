@@ -22,7 +22,7 @@ class EventBus {
   };
 
   getObservers = <T extends EventId>(eventId: EventId): EventBusObserver<T>[] => {
-    return (this.observers.get(eventId)?.values ?? []) as EventBusObserver<T>[];
+    return Array.from(this.observers.get(eventId)?.values() ?? []) as EventBusObserver<T>[];
   };
 }
 

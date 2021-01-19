@@ -48,7 +48,7 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
       Rating.created_at as ratingCreatedAt
     FROM
       Notebook
-    JOIN
+    LEFT JOIN
       Rating on Rating.notebook_id=Notebook.id
     ${whereClause}
     ${orderByClause};
@@ -75,14 +75,16 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
         });
       }
 
-      notebooks[notebooks.length - 1].ratings.push({
-        id: row.ratingId,
-        createdAt: new Date(row.ratingCreatedAt),
-        updatedAt: new Date(row.ratingUpdatedAt),
-        title: row.ratingTitle,
-        value: row.ratingValue,
-        imageUrl: row.ratingImageUrl,
-      });
+      if (row.ratingId) {
+        notebooks[notebooks.length - 1].ratings.push({
+          id: row.ratingId,
+          createdAt: new Date(row.ratingCreatedAt),
+          updatedAt: new Date(row.ratingUpdatedAt),
+          title: row.ratingTitle,
+          value: row.ratingValue,
+          imageUrl: row.ratingImageUrl,
+        });
+      }
     }
 
     return notebooks;

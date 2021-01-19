@@ -15,7 +15,7 @@ export const NotebookRowView = ({notebook}: Props) => {
       <Text>{notebook.title}</Text>
       <ScrollView horizontal>
         {notebook.ratings.slice(0, 10).map(rating => {
-          return <RatingSummaryView rating={rating} />;
+          return <RatingSummaryView key={rating.id} rating={rating} />;
         })}
       </ScrollView>
     </Box>
