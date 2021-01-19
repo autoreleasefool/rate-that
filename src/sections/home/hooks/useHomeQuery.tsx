@@ -39,7 +39,7 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
       Notebook.title as notebookTitle,
       Notebook.created_at as notebookCreatedAt,
       Notebook.updated_at as notebookUpdatedAt,
-      NotebookType.title as notebookType,
+      Notebook.type_id as notebookType,
       Rating.id as ratingId,
       Rating.title as ratingTitle,
       Rating.value as ratingValue,
@@ -48,8 +48,6 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
       Rating.created_at as ratingCreatedAt
     FROM
       Notebook
-    JOIN
-      NotebookType on Notebook.type_id=NotebookType.id
     JOIN
       Rating on Rating.notebook_id=Notebook.id
     ${whereClause}

@@ -1,28 +1,57 @@
-import React from 'react';
-import {FlatList, RefreshControl} from 'react-native';
+import React, {useCallback, useLayoutEffect, useState} from 'react';
+import {Button, FlatList, Modal, RefreshControl} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
+import {AddNotebookScreen} from 'sections/notebooks/screens/AddNotebookScreen';
 import {Box} from 'shared/components/Box';
-import {EmptyStateView} from 'shared/components/EmptyStateView';
 import {Divider} from 'shared/components/Divider';
+import {EmptyStateView} from 'shared/components/EmptyStateView';
+import {useEventBusConsumer} from 'shared/util/EventBus';
 
 import {useHomeQuery} from '../hooks/useHomeQuery';
 import {NotebookRowView} from '../views/NotebookRowView';
 
 type Props = StackScreenProps<RootStackParamList, 'Home'>;
 
-export const HomeScreen = ({}: Props) => {
-  const {isLoading, data: notebooks} = useHomeQuery({filter: ''});
+export const HomeScreen = ({navigation}: Props) => {
+  const [showAddNotebook, setShowAddNotebook] = useState(false);
+
+  const {isLoading, isRefreshing, data: notebooks, refresh} = useHomeQuery({filter: ''});
+
+  const showNotebookModal = useCallback(() => setShowAddNotebook(true), [setShowAddNotebook]);
+  const hideNotebookModal = useCallback(() => setShowAddNotebook(false), [setShowAddNotebook]);
+
+  useEventBusConsumer({
+    eventId: 'AddNotebook',
+    observer: useCallback(() => {
+      setShowAddNotebook(false);
+      refresh();
+    }, [setShowAddNotebook, refresh]),
+  });
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <Button onPress={showNotebookModal} title="Add" />,
+    });
+  }, [navigation, showNotebookModal]);
 
   return (
     <Box flex={1}>
       <FlatList
         data={notebooks}
         renderItem={({item}) => <NotebookRowView notebook={item} />}
-        refreshControl={<RefreshControl refreshing={isLoading} />}
+        refreshControl={<RefreshControl refreshing={isLoading || isRefreshing} onRefresh={refresh} />}
         ItemSeparatorComponent={Divider}
         ListEmptyComponent={<EmptyStateView title="No notebooks found" />}
       />
+      <Modal
+        animationType="slide"
+        presentationStyle="pageSheet"
+        visible={showAddNotebook}
+        onRequestClose={hideNotebookModal}
+      >
+        <AddNotebookScreen />
+      </Modal>
     </Box>
   );
 };

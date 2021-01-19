@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect} from 'react';
+import React, {useCallback, useContext, useEffect, useMemo} from 'react';
 import {v4 as uuidV4} from 'uuid';
 import {EventPayload, EventId} from 'shared/constants';
 
@@ -7,22 +7,18 @@ type EventBusObserver<T extends EventId> = (payload: EventPayload[T]) => void;
 class EventBus {
   observers: Map<EventId, Map<string, any>> = new Map();
 
-  addObserver = <T extends EventId>(eventId: EventId, observer: EventBusObserver<T>): (() => void) => {
-    const id = uuidV4();
+  addObserver = <T extends EventId>(eventId: EventId, observerId: string, observer: EventBusObserver<T>) => {
     if (!this.observers.has(eventId)) {
       this.observers.set(eventId, new Map());
     }
-    this.observers.get(eventId)?.set(id, observer);
-    return () => {
-      this.removeObserver(eventId, id);
-    };
+    this.observers.get(eventId)?.set(observerId, observer);
   };
 
-  removeObserver = (eventId: EventId, id: string) => {
+  removeObserver = (eventId: EventId, observerId: string) => {
     if (!this.observers.has(eventId)) {
       return;
     }
-    this.observers.get(eventId)?.delete(id);
+    this.observers.get(eventId)?.delete(observerId);
   };
 
   getObservers = <T extends EventId>(eventId: EventId): EventBusObserver<T>[] => {
@@ -65,12 +61,13 @@ type ConsumerProps<T extends EventId> =
 
 export const useEventBusConsumer = <T extends EventId>({observer, ...props}: ConsumerProps<T>) => {
   const ids = 'eventId' in props ? [props.eventId] : props.eventIds;
+  const observerId = useMemo(() => uuidV4(), []);
   const eventBus = useContext(EventBusContext);
   useEffect(() => {
-    const unsubs = ids.map(eventId => eventBus.addObserver(eventId, observer));
+    ids.forEach(eventId => eventBus.addObserver(eventId, observerId, observer));
     return () => {
-      unsubs.forEach(unsub => unsub());
+      ids.forEach(eventId => eventBus.removeObserver(eventId, observerId));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [observer, observerId, eventBus, ...ids]);
 };
