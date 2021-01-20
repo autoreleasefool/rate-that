@@ -12,7 +12,9 @@ interface Props {
 export const NotebookRowView = ({notebook}: Props) => {
   return (
     <Box backgroundColor="cardBackground">
-      <Text>{notebook.title}</Text>
+      <Text variant="subheader" margin="m">
+        {notebook.title}
+      </Text>
       <ScrollView horizontal>
         {notebook.ratings.slice(0, 10).map(rating => {
           return <RatingSummaryView key={rating.id} rating={rating} />;

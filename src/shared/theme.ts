@@ -20,9 +20,9 @@ export const theme = createTheme({
     cardBackground: palette.purple,
 
     textPrimary: palette.black,
-    // textPrimaryContrasting: palette.white,
+    textPrimaryContrasting: palette.white,
     textSecondary: palette.blackTransparent,
-    // textSecondaryContrasting: palette.whiteTransparent,
+    textSecondaryContrasting: palette.whiteTransparent,
   },
   spacing: {
     xs: 4,

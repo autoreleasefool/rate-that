@@ -16,7 +16,7 @@ const StyledApp = () => {
 
 const App = () => {
   return (
-    <Box flex={1}>
+    <Box flex={1} backgroundColor="background">
       <EventBusContainer>
         <NavigationContainer>
           <RootNavigator />

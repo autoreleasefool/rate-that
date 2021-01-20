@@ -10,6 +10,7 @@ import {useEventBusConsumer} from 'shared/util/EventBus';
 
 import {useHomeQuery} from '../hooks/useHomeQuery';
 import {NotebookRowView} from '../views/NotebookRowView';
+import {HeaderButton} from 'shared/components/header/HeaderButton';
 
 type Props = StackScreenProps<RootStackParamList, 'Home'>;
 
@@ -31,18 +32,18 @@ export const HomeScreen = ({navigation}: Props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Button onPress={showNotebookModal} title="Add" />,
+      headerRight: () => <HeaderButton onPress={showNotebookModal} title="Add" />,
     });
   }, [navigation, showNotebookModal]);
 
   return (
-    <Box flex={1}>
+    <Box flex={1} backgroundColor="background">
       <FlatList
         data={notebooks}
         renderItem={({item}) => <NotebookRowView notebook={item} />}
         keyExtractor={({id}) => `${id}`}
         refreshControl={<RefreshControl refreshing={isLoading || isRefreshing} onRefresh={refresh} />}
-        ItemSeparatorComponent={Divider}
+        ItemSeparatorComponent={() => <Divider style="inset" />}
         ListEmptyComponent={<EmptyStateView title="No notebooks found" />}
       />
       <Modal
