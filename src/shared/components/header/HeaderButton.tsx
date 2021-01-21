@@ -1,6 +1,5 @@
 import React from 'react';
 import {Pressable} from 'react-native';
-
 import {Text} from '../Text';
 
 interface HeaderButtonProps {
@@ -11,11 +10,14 @@ interface HeaderButtonProps {
 export const HeaderButton = ({title, onPress}: HeaderButtonProps) => {
   return (
     <Pressable onPress={onPress}>
-      {({pressed}) => (
-        <Text padding="m" variant="body" color={pressed ? 'textSecondaryContrasting' : 'textPrimaryContrasting'}>
-          {title}
-        </Text>
-      )}
+      {({pressed}) => {
+        const color = pressed ? 'textSecondaryContrasting' : 'textPrimaryContrasting';
+        return (
+          <Text variant="body" color={color}>
+            {title}
+          </Text>
+        );
+      }}
     </Pressable>
   );
 };

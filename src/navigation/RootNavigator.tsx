@@ -1,25 +1,23 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {useTheme} from '@shopify/restyle';
-import {HomeScreen} from 'sections/home/screens/HomeScreen';
-import {Theme} from 'shared/theme';
+import {createNativeStackNavigator} from 'react-native-screens/native-stack';
 
+import {HomeNavigator} from './HomeNavigator';
+import {NotebookModalNavigator} from './NotebookModalNavigator';
 import {RootStackParamList} from './routes';
 
-const Stack = createStackNavigator<RootStackParamList>();
+const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
-  const theme = useTheme<Theme>();
-
   return (
-    <Stack.Navigator
-      initialRouteName="Home"
+    <RootStack.Navigator
+      mode="modal"
       screenOptions={{
-        headerStyle: {backgroundColor: theme.colors.background},
-        headerTintColor: theme.colors.textPrimaryContrasting,
+        stackPresentation: 'transparentModal',
+        headerShown: false,
       }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} options={{headerTitle: 'Home'}} />
-    </Stack.Navigator>
+      <RootStack.Screen name="Home" component={HomeNavigator} options={{stackAnimation: 'none'}} />
+      <RootStack.Screen name="AddNotebook" component={NotebookModalNavigator} options={{stackPresentation: 'modal'}} />
+    </RootStack.Navigator>
   );
 };

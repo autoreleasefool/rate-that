@@ -1,3 +1,4 @@
+import {enableScreens} from 'react-native-screens';
 import 'react-native-get-random-values';
 import 'react-native-gesture-handler';
 import {AppRegistry} from 'react-native';
@@ -7,5 +8,7 @@ import {enablePromise, DEBUG as debugSQLite} from 'react-native-sqlite-storage';
 
 debugSQLite(__DEV__);
 enablePromise(true);
+
+enableScreens();
 
 AppRegistry.registerComponent(appName, () => App);

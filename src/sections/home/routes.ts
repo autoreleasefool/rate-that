@@ -1,3 +1,3 @@
 export type HomeStackParamList = {
-  Home: undefined;
+  Index: undefined;
 };
