@@ -1,6 +1,6 @@
 import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useCallback, useState, useLayoutEffect} from 'react';
-import {Button, TextInput} from 'react-native';
+import {TextInput} from 'react-native';
 import {Box} from 'shared/components/Box';
 import {HeaderButton} from 'shared/components/header/HeaderButton';
 import {Text} from 'shared/components/Text';
@@ -35,7 +35,7 @@ export const AddNotebookScreen = ({navigation}: Props) => {
   return (
     <Box flex={1} justifyContent="center" alignItems="center">
       <Text>Add notebook</Text>
-      <TextInput placeholder="Title" onChangeText={text => setNotebookTitle(text)} />
+      <TextInput placeholder="Title" onChangeText={setNotebookTitle} />
     </Box>
   );
 };

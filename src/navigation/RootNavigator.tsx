@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from 'react-native-screens/native-stack';
 
 import {HomeNavigator} from './HomeNavigator';
 import {NotebookModalNavigator} from './NotebookModalNavigator';
+import {RatingModalNavigator} from './RatingModalNavigator';
 import {RootStackParamList} from './routes';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -18,6 +19,7 @@ export const RootNavigator = () => {
     >
       <RootStack.Screen name="Home" component={HomeNavigator} options={{stackAnimation: 'none'}} />
       <RootStack.Screen name="AddNotebook" component={NotebookModalNavigator} options={{stackPresentation: 'modal'}} />
+      <RootStack.Screen name="AddRating" component={RatingModalNavigator} options={{stackPresentation: 'modal'}} />
     </RootStack.Navigator>
   );
 };

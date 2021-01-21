@@ -25,7 +25,7 @@ interface Props {
 export const HomeScreen = ({navigation}: Props) => {
   const {isLoading, isRefreshing, data: notebooks, refresh} = useHomeQuery({filter: ''});
 
-  useEventBusConsumer({eventId: 'AddNotebook', observer: refresh});
+  useEventBusConsumer({eventIds: ['AddNotebook', 'AddRating'], observer: refresh});
 
   useLayoutEffect(() => {
     navigation.setOptions({
