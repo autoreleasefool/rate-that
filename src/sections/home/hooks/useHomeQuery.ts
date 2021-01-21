@@ -8,7 +8,7 @@ enum SortOrder {
 }
 
 interface HomeQueryProps {
-  filter: string;
+  filter?: string;
   sortOrder?: SortOrder;
 }
 

@@ -7,11 +7,11 @@ import {Box} from 'shared/components/Box';
 import {Divider} from 'shared/components/Divider';
 import {EmptyStateView} from 'shared/components/EmptyStateView';
 import {HeaderButton} from 'shared/components/header/HeaderButton';
+import {useEventBusConsumer} from 'shared/util/EventBus';
 
 import {useHomeQuery} from '../hooks/useHomeQuery';
-import {NotebookRowView} from '../views/NotebookRowView';
 import {HomeStackParamList} from '../routes';
-import {useEventBusConsumer} from 'shared/util/EventBus';
+import {NotebookSummaryContainer} from '../container/NotebookSummaryContainer';
 
 type NavigationProp = CompositeNavigationProp<
   StackNavigationProp<HomeStackParamList, 'Index'>,
@@ -39,7 +39,7 @@ export const HomeScreen = ({navigation}: Props) => {
     <Box flex={1} backgroundColor="background">
       <FlatList
         data={notebooks}
-        renderItem={({item}) => <NotebookRowView notebook={item} />}
+        renderItem={({item}) => <NotebookSummaryContainer notebook={item} />}
         keyExtractor={({id}) => `${id}`}
         refreshControl={<RefreshControl refreshing={isLoading || isRefreshing} onRefresh={refresh} />}
         ItemSeparatorComponent={() => <Divider style="inset" />}

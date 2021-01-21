@@ -14,11 +14,11 @@ interface BaseQueryProps {
   skip?: boolean;
 }
 
-export const useBaseQuery = <T>({query, skip}: BaseQueryProps): BaseQueryResult<[T]> => {
+export const useBaseQuery = <T>({query, skip}: BaseQueryProps): BaseQueryResult<T[]> => {
   const [didPerformQuery, setDidPerformQuery] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState<[T]>();
+  const [data, setData] = useState<T[]>();
   const [error, setError] = useState<Error>();
   const db = useDatabase();
 
