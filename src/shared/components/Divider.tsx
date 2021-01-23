@@ -13,7 +13,7 @@ export const Divider = ({vertical, style}: DividerProps) => {
   return (
     <Box
       flex={1}
-      paddingLeft={style === 'full' ? undefined : 'm'}
+      paddingLeft={style === 'full' ? undefined : 'standard'}
       height={vertical ? undefined : StyleSheet.hairlineWidth}
       width={vertical ? StyleSheet.hairlineWidth : undefined}
     />

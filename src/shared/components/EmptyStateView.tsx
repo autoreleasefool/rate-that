@@ -10,10 +10,10 @@ interface EmptyStateProps {
 export const EmptyStateView = ({title, subtitle}: EmptyStateProps) => {
   return (
     <Box flex={1}>
-      <Box margin="m">
+      <Box margin="standard">
         <Text variant="header">{title}</Text>
         {subtitle ? (
-          <Text variant="body" marginTop="m">
+          <Text variant="body" marginTop="standard">
             {subtitle}
           </Text>
         ) : null}

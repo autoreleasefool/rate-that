@@ -20,7 +20,14 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
 
   return (
     <Pressable onPress={commonOnPress}>
-      <Box width={80} height={120} backgroundColor="primary" margin="m" alignItems="center" justifyContent="center">
+      <Box
+        width={80}
+        height={120}
+        backgroundColor="primary"
+        marginLeft="standard"
+        alignItems="center"
+        justifyContent="center"
+      >
         {rating === 'placeholder' ? <Text variant="header">+</Text> : <Text variant="header">{rating.value}</Text>}
       </Box>
     </Pressable>

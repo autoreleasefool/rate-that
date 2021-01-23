@@ -25,11 +25,15 @@ export const theme = createTheme({
     textSecondaryContrasting: palette.whiteTransparent,
   },
   spacing: {
-    xs: 4,
-    s: 8,
-    m: 16,
-    l: 24,
-    xl: 40,
+    extraSmall: 4,
+    small: 8,
+    standard: 16,
+    large: 24,
+    extraLarge: 40,
+  },
+  borderRadii: {
+    standard: 4,
+    large: 8,
   },
   breakpoints: {
     phone: 0,
