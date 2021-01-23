@@ -14,7 +14,7 @@ export const NotebookModalNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {backgroundColor: theme.colors.background},
-        headerTintColor: theme.colors.textPrimaryContrasting,
+        headerTintColor: theme.colors.textPrimary,
       }}
     >
       <Stack.Screen name="Index" component={AddNotebookScreen} options={{headerTitle: 'Add notebook'}} />

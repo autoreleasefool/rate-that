@@ -15,7 +15,7 @@ export const HomeNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {backgroundColor: theme.colors.background},
-        headerTintColor: theme.colors.textPrimaryContrasting,
+        headerTintColor: theme.colors.textPrimary,
       }}
     >
       <Stack.Screen name="Index" component={HomeScreen} options={{headerTitle: 'Home'}} />

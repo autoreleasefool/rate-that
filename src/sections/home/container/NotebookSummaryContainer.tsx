@@ -35,7 +35,7 @@ export const NotebookSummaryContainer = ({notebook}: Props) => {
   );
 
   return (
-    <Box backgroundColor="cardBackground" paddingBottom="standard">
+    <Box backgroundColor="cardBackground">
       <Pressable onPress={onPress}>
         <Text variant="subheader" margin="standard">
           {notebook.title}

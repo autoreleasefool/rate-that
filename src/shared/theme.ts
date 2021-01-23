@@ -1,10 +1,13 @@
 import {createTheme} from '@shopify/restyle';
 
 const palette = {
-  ivory: '#D7D4DD',
-  periwinkle: '#838BC2',
-  purple: '#715C8C',
-  darkBlue: '#333F63',
+  blue: '#055C9D',
+  darkBlue: '#003060',
+  lightBlue: '#0E86D4',
+
+  green: '#478C5C',
+  darkGreen: '#013A20',
+  lightGreen: '#BACC81',
 
   black: '#000000',
   blackTransparent: 'rgba(0, 0, 0, 0.5)',
@@ -14,15 +17,19 @@ const palette = {
 
 export const theme = createTheme({
   colors: {
-    primary: palette.periwinkle,
-    seconday: palette.purple,
-    background: palette.darkBlue,
-    cardBackground: palette.purple,
+    primary: palette.lightBlue,
+    secondary: palette.lightGreen,
+
+    background: palette.white,
+    cardBackground: palette.white,
 
     textPrimary: palette.black,
     textPrimaryContrasting: palette.white,
     textSecondary: palette.blackTransparent,
     textSecondaryContrasting: palette.whiteTransparent,
+
+    shadow: palette.black,
+    divider: palette.black,
   },
   spacing: {
     extraSmall: 4,
@@ -70,3 +77,23 @@ export const theme = createTheme({
 });
 
 export type Theme = typeof theme;
+
+export const darkTheme: Theme = {
+  ...theme,
+  colors: {
+    ...theme.colors,
+
+    primary: palette.blue,
+    secondary: palette.green,
+
+    background: palette.black,
+    cardBackground: palette.black,
+
+    textPrimary: palette.white,
+    textPrimaryContrasting: palette.black,
+    textSecondary: palette.whiteTransparent,
+    textSecondaryContrasting: palette.blackTransparent,
+
+    divider: palette.white,
+  },
+};

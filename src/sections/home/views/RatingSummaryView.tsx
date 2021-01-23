@@ -23,8 +23,14 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
       <Box
         width={80}
         height={120}
+        borderRadius="large"
+        shadowColor="shadow"
+        shadowRadius={4}
+        shadowOpacity={0.2}
+        shadowOffset={{width: 2, height: 2}}
         backgroundColor="primary"
         marginLeft="standard"
+        marginBottom="standard"
         alignItems="center"
         justifyContent="center"
       >

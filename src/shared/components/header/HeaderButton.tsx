@@ -11,7 +11,7 @@ export const HeaderButton = ({title, onPress}: HeaderButtonProps) => {
   return (
     <Pressable onPress={onPress}>
       {({pressed}) => {
-        const color = pressed ? 'textSecondaryContrasting' : 'textPrimaryContrasting';
+        const color = pressed ? 'textSecondary' : 'textPrimary';
         return (
           <Text variant="body" color={color}>
             {title}
