@@ -13,6 +13,7 @@
           "shared": "./src/shared"
         }
       }
-    ]
+    ],
+    "react-native-reanimated/plugin"
   ]
 }
