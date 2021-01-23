@@ -4,6 +4,7 @@ import React, {useCallback, useState, useLayoutEffect} from 'react';
 import {TextInput} from 'react-native';
 import {Box} from 'shared/components/Box';
 import {HeaderButton} from 'shared/components/header/HeaderButton';
+import {SearchBar} from 'shared/components/search/SearchBar';
 import {Text} from 'shared/components/Text';
 
 import {useAddRating} from '../hooks/useAddRating';
@@ -16,6 +17,8 @@ interface Props {
 
 export const AddRatingScreen = ({navigation, route}: Props) => {
   const addRating = useAddRating();
+
+  const [query, setQuery] = useState('');
 
   const [ratingTitle, setRatingTitle] = useState('');
   const [ratingValue, setRatingValue] = useState(0);
@@ -33,9 +36,11 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
   }, [navigation, onSave]);
 
   return (
-    <Box flex={1} backgroundColor="background" justifyContent="center" alignItems="center">
-      <Text>Add rating</Text>
-      <TextInput placeholder="Title" onChangeText={setRatingTitle} />
+    <Box flex={1} backgroundColor="background">
+      <SearchBar query={query} placeholder={'Search'} onChange={setQuery} />
+      <Box flex={1}>
+        <TextInput placeholder="Title" onChangeText={setRatingTitle} />
+      </Box>
     </Box>
   );
 };
