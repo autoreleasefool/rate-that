@@ -33,7 +33,7 @@ export const AddNotebookScreen = ({navigation}: Props) => {
   }, [navigation, onSave]);
 
   return (
-    <Box flex={1} justifyContent="center" alignItems="center">
+    <Box flex={1} backgroundColor="background" justifyContent="center" alignItems="center">
       <Text>Add notebook</Text>
       <TextInput placeholder="Title" onChangeText={setNotebookTitle} />
     </Box>

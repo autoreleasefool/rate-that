@@ -33,7 +33,7 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
   }, [navigation, onSave]);
 
   return (
-    <Box flex={1} justifyContent="center" alignItems="center">
+    <Box flex={1} backgroundColor="background" justifyContent="center" alignItems="center">
       <Text>Add rating</Text>
       <TextInput placeholder="Title" onChangeText={setRatingTitle} />
     </Box>

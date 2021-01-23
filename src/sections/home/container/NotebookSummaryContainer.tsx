@@ -21,7 +21,7 @@ interface Props {
 export const NotebookSummaryContainer = ({notebook}: Props) => {
   const navigation = useNavigation<NavigationProp>();
 
-  const onPress = useCallback(() => {
+  const openNotebookDetails = useCallback(() => {
     navigation.navigate('NotebookDetails', {notebookId: notebook.id});
   }, [navigation, notebook.id]);
 
@@ -35,18 +35,24 @@ export const NotebookSummaryContainer = ({notebook}: Props) => {
   );
 
   return (
-    <Box backgroundColor="cardBackground">
-      <Pressable onPress={onPress}>
-        <Text variant="subheader" margin="standard">
-          {notebook.title}
-        </Text>
-      </Pressable>
-      <ScrollView horizontal>
-        <RatingSummaryView onPress={onPressRating} rating="placeholder" />
-        {notebook.ratings.slice(0, 10).map(rating => {
-          return <RatingSummaryView key={rating.id} rating={rating} onPress={onPressRating} />;
-        })}
-      </ScrollView>
-    </Box>
+    <Pressable onPress={openNotebookDetails}>
+      {({pressed}) => {
+        const backgroundColor = pressed ? 'cardBackgroundPressed' : 'cardBackground';
+
+        return (
+          <Box backgroundColor={backgroundColor} marginTop="standard" marginHorizontal="standard" borderRadius="large">
+            <Text variant="subheader" margin="standard">
+              {notebook.title}
+            </Text>
+            <ScrollView horizontal>
+              <RatingSummaryView onPress={onPressRating} rating="placeholder" />
+              {notebook.ratings.slice(0, 10).map(rating => {
+                return <RatingSummaryView key={rating.id} rating={rating} onPress={onPressRating} />;
+              })}
+            </ScrollView>
+          </Box>
+        );
+      }}
+    </Pressable>
   );
 };

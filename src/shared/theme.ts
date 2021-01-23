@@ -10,8 +10,11 @@ const palette = {
   lightGreen: '#BACC81',
 
   black: '#000000',
-  blackTransparent: 'rgba(0, 0, 0, 0.5)',
+  darkGray: '#333333',
+  lightGray: '#EFEFEF',
   white: '#FFFFFF',
+
+  blackTransparent: 'rgba(0, 0, 0, 0.5)',
   whiteTransparent: 'rgba(255, 255, 255, 0.7)',
 };
 
@@ -20,8 +23,12 @@ export const theme = createTheme({
     primary: palette.lightBlue,
     secondary: palette.lightGreen,
 
-    background: palette.white,
+    primaryPressed: palette.blue,
+    secondaryPressed: palette.green,
+
+    background: palette.lightGray,
     cardBackground: palette.white,
+    cardBackgroundPressed: palette.lightGray,
 
     textPrimary: palette.black,
     textPrimaryContrasting: palette.white,
@@ -86,8 +93,12 @@ export const darkTheme: Theme = {
     primary: palette.blue,
     secondary: palette.green,
 
+    primaryPressed: palette.darkBlue,
+    secondaryPressed: palette.darkGreen,
+
     background: palette.black,
-    cardBackground: palette.black,
+    cardBackground: palette.darkGray,
+    cardBackgroundPressed: palette.black,
 
     textPrimary: palette.white,
     textPrimaryContrasting: palette.black,

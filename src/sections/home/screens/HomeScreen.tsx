@@ -42,7 +42,6 @@ export const HomeScreen = ({navigation}: Props) => {
         renderItem={({item}) => <NotebookSummaryContainer notebook={item} />}
         keyExtractor={({id}) => `${id}`}
         refreshControl={<RefreshControl refreshing={isLoading || isRefreshing} onRefresh={refresh} />}
-        ItemSeparatorComponent={() => <Divider style="inset" />}
         ListEmptyComponent={<EmptyStateView title="No notebooks found" />}
       />
     </Box>

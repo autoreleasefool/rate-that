@@ -20,22 +20,27 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
 
   return (
     <Pressable onPress={commonOnPress}>
-      <Box
-        width={80}
-        height={120}
-        borderRadius="large"
-        shadowColor="shadow"
-        shadowRadius={4}
-        shadowOpacity={0.2}
-        shadowOffset={{width: 2, height: 2}}
-        backgroundColor="primary"
-        marginLeft="standard"
-        marginBottom="standard"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {rating === 'placeholder' ? <Text variant="header">+</Text> : <Text variant="header">{rating.value}</Text>}
-      </Box>
+      {({pressed}) => {
+        const backgroundColor = pressed ? 'primaryPressed' : 'primary';
+        return (
+          <Box
+            width={80}
+            height={120}
+            borderRadius="large"
+            shadowColor="shadow"
+            shadowRadius={4}
+            shadowOpacity={0.2}
+            shadowOffset={{width: 2, height: 2}}
+            backgroundColor={backgroundColor}
+            marginLeft="standard"
+            marginBottom="standard"
+            alignItems="center"
+            justifyContent="center"
+          >
+            {rating === 'placeholder' ? <Text variant="header">+</Text> : <Text variant="header">{rating.value}</Text>}
+          </Box>
+        );
+      }}
     </Pressable>
   );
 };
