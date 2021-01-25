@@ -10,42 +10,44 @@ interface MovieSearchParams {
   // };
 }
 
-interface MovieSearchResult {
+export interface MovieSearchResult {
   id: number;
   title: string;
   release_date: string;
   poster_path?: string;
 }
 
-interface UseMovieResult {
+export interface UseMovieResult {
   results?: MovieSearchResult[];
   error?: Error;
 }
 
 export const useMovieSearch = ({query}: MovieSearchParams): UseMovieResult => {
   const url = buildRequestUrl({path: 'search/movie', query: {query}});
-  const [didPerformQuery, setDidPerformQuery] = useState(false);
+  // const [didPerformQuery, setDidPerformQuery] = useState(false);
   const [results, setResults] = useState<MovieSearchResult[]>();
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
-    if (didPerformQuery) {
-      return;
-    }
+    // if (didPerformQuery) {
+    //   return;
+    // }
 
     const performQuery = async () => {
+      console.log(`Performing query, ${url}`);
       try {
         const result = await fetch(url);
         const json = await result.json();
+        console.log(`Result, ${JSON.stringify(json)}`);
         setResults(json.results);
       } catch (err) {
         setError(err);
       }
     };
 
-    setDidPerformQuery(true);
+    // setDidPerformQuery(true);
     performQuery();
-  }, [didPerformQuery, url, setError, setResults]);
+  }, [url, setError, setResults]);
 
   return {
     results,
