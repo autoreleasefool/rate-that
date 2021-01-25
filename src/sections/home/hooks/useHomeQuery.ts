@@ -1,6 +1,6 @@
 import {useMemo} from 'react';
-import {Notebook, NotebookType} from 'shared/data/schema';
-import {useBaseQuery, BaseQueryResult} from 'shared/data/hooks/useBaseQuery';
+import {Notebook, NotebookType} from 'shared/data/local/schema';
+import {useBaseQuery, BaseQueryResult} from 'shared/data/local/hooks/useBaseQuery';
 
 enum SortOrder {
   ALPHABETICAL,

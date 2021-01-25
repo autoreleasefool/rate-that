@@ -5,7 +5,7 @@ import React, {useCallback} from 'react';
 import {Pressable, ScrollView} from 'react-native';
 import {Box} from 'shared/components/Box';
 import {Text} from 'shared/components/Text';
-import {Notebook, Rating} from 'shared/data/schema';
+import {Notebook, Rating} from 'shared/data/local/schema';
 import {HomeStackParamList} from '../routes';
 
 import {RatingSummaryView} from '../views/RatingSummaryView';

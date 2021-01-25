@@ -1,6 +1,6 @@
 import {useCallback} from 'react';
-import {useDatabase} from 'shared/data/hooks/useDatabase';
-import {Rating} from 'shared/data/schema';
+import {useDatabase} from 'shared/data/local/hooks/useDatabase';
+import {Rating} from 'shared/data/local/schema';
 import {useEventBusProducer} from 'shared/util/EventBus';
 
 interface AddRatingParams {

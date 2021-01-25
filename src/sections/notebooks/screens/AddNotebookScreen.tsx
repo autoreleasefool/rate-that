@@ -4,7 +4,7 @@ import {TextInput} from 'react-native';
 import {Box} from 'shared/components/Box';
 import {HeaderButton} from 'shared/components/header/HeaderButton';
 import {Text} from 'shared/components/Text';
-import {NotebookType} from 'shared/data/schema';
+import {NotebookType} from 'shared/data/local/schema';
 
 import {useAddNotebook} from '../hooks/useAddNotebook';
 import {AddNotebookStackParamList} from '../routes';

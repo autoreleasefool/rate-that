@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {Pressable} from 'react-native';
 import {Box} from 'shared/components/Box';
 import {Text} from 'shared/components/Text';
-import {Rating} from 'shared/data/schema';
+import {Rating} from 'shared/data/local/schema';
 
 interface Props {
   rating: Rating | 'placeholder';

@@ -1,4 +1,4 @@
-import {Notebook, Rating} from './data/schema';
+import {Notebook, Rating} from './data/local/schema';
 
 export interface EventPayload {
   AddNotebook: Notebook;

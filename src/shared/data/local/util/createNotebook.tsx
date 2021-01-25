@@ -1,5 +1,5 @@
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
-import {NotebookType} from 'shared/data/schema';
+import {NotebookType} from 'shared/data/local/schema';
 
 interface CreateNotebookProps {
   title: string;
