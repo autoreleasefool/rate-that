@@ -2,10 +2,7 @@ import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useCallback, useState, useLayoutEffect} from 'react';
 import {FlatList} from 'react-native';
-import {Box} from 'shared/components/Box';
-import {HeaderButton} from 'shared/components/header/HeaderButton';
-import {SearchBar} from 'shared/components/search/SearchBar';
-import {TextField} from 'shared/components/TextField';
+import {Box, HeaderButton, SearchBar, TextField} from 'shared/components';
 import {useMovieSearch, MovieSearchResult} from 'shared/data/tmdb/hooks/useMovieSearch';
 import {useDebounce} from 'shared/util/useDebounce';
 

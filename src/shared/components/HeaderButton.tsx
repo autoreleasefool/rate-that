@@ -1,6 +1,7 @@
 import React from 'react';
 import {Pressable} from 'react-native';
-import {Text} from '../Text';
+
+import {Text} from './Text';
 
 interface HeaderButtonProps {
   title: string;

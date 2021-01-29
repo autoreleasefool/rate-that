@@ -1,13 +1,12 @@
+import React, {useCallback} from 'react';
+import {Pressable, ScrollView} from 'react-native';
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
-import React, {useCallback} from 'react';
-import {Pressable, ScrollView} from 'react-native';
-import {Box} from 'shared/components/Box';
-import {Text} from 'shared/components/Text';
+import {Box, Text} from 'shared/components';
 import {Notebook, Rating} from 'shared/data/local/schema';
-import {HomeStackParamList} from '../routes';
 
+import {HomeStackParamList} from '../routes';
 import {RatingSummaryView} from '../views/RatingSummaryView';
 
 type NavigationProp = CompositeNavigationProp<

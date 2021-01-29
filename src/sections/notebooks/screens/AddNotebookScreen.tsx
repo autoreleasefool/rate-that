@@ -1,9 +1,7 @@
-import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useCallback, useState, useLayoutEffect} from 'react';
 import {TextInput} from 'react-native';
-import {Box} from 'shared/components/Box';
-import {HeaderButton} from 'shared/components/header/HeaderButton';
-import {Text} from 'shared/components/Text';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {Box, HeaderButton, Text} from 'shared/components';
 import {NotebookType} from 'shared/data/local/schema';
 
 import {useAddNotebook} from '../hooks/useAddNotebook';

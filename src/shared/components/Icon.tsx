@@ -1,6 +1,7 @@
 import React from 'react';
 import {useTheme} from '@shopify/restyle';
-import {Theme} from 'shared/theme';
+
+import {Theme} from '../theme';
 
 import Close from 'assets/icons/close.svg';
 import Search from 'assets/icons/search.svg';

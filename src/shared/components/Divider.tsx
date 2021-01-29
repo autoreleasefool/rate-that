@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {useTheme} from '@shopify/restyle';
+import {Theme} from 'shared/theme';
 
 import {Box} from './Box';
-import {Theme} from 'shared/theme';
 
 type DividerStyle = 'inset' | 'full';
 interface DividerProps {

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Image} from 'react-native';
-import {Box} from 'shared/components/Box';
-import {Text} from 'shared/components/Text';
+import {Box, Text} from 'shared/components';
 import {MovieSearchResult} from 'shared/data/tmdb/hooks/useMovieSearch';
 
 interface Props {

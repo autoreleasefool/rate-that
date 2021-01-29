@@ -1,7 +1,8 @@
 import {useTheme} from '@shopify/restyle';
 import React, {ComponentProps} from 'react';
 import {TextInput} from 'react-native';
-import {Theme} from 'shared/theme';
+
+import {Theme} from '../theme';
 
 interface TextInputProps extends ComponentProps<typeof TextInput> {}
 

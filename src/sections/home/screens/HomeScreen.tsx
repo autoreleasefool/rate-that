@@ -3,9 +3,7 @@ import {FlatList, RefreshControl} from 'react-native';
 import {CompositeNavigationProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
-import {Box} from 'shared/components/Box';
-import {EmptyStateView} from 'shared/components/EmptyStateView';
-import {HeaderButton} from 'shared/components/header/HeaderButton';
+import {Box, EmptyStateView, HeaderButton} from 'shared/components';
 import {useEventBusConsumer} from 'shared/util/EventBus';
 
 import {useHomeQuery} from '../hooks/useHomeQuery';

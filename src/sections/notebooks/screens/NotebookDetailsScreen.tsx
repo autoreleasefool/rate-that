@@ -1,10 +1,10 @@
+import React, {useLayoutEffect} from 'react';
 import {CompositeNavigationProp, RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
-import React, {useLayoutEffect} from 'react';
 import {HomeStackParamList} from 'sections/home/routes';
-import {Box} from 'shared/components/Box';
-import {Text} from 'shared/components/Text';
+import {Box, Text} from 'shared/components';
+
 import {useNotebookDetailsQuery} from '../hooks/useNotebookDetailsQuery';
 
 type NavigationProp = CompositeNavigationProp<

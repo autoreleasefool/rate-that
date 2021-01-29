@@ -1,7 +1,6 @@
 import React, {useCallback} from 'react';
 import {Pressable} from 'react-native';
-import {Box} from 'shared/components/Box';
-import {Text} from 'shared/components/Text';
+import {Box, Text} from 'shared/components';
 import {Rating} from 'shared/data/local/schema';
 
 interface Props {
