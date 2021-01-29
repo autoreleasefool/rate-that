@@ -31,7 +31,9 @@ export const theme = createTheme({
     cardBackgroundPressed: palette.lightGray,
 
     white: palette.white,
+    whiteTransparent: palette.whiteTransparent,
     black: palette.black,
+    blackTransparent: palette.blackTransparent,
 
     textPrimary: palette.black,
     textPrimaryContrasting: palette.white,

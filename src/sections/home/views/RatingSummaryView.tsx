@@ -51,7 +51,7 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
               <Text variant="header">+</Text>
             ) : (
               <Box
-                backgroundColor="black"
+                backgroundColor="blackTransparent"
                 position="absolute"
                 right={0}
                 bottom={0}

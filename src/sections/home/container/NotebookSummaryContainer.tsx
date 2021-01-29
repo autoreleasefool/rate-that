@@ -17,6 +17,8 @@ interface Props {
   notebook: Notebook;
 }
 
+const MAX_RATINGS_PREVIEW = 10;
+
 export const NotebookSummaryContainer = ({notebook}: Props) => {
   const navigation = useNavigation<NavigationProp>();
 
@@ -43,11 +45,17 @@ export const NotebookSummaryContainer = ({notebook}: Props) => {
             <Text variant="subheader" margin="standard">
               {notebook.title}
             </Text>
-            <ScrollView horizontal>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <RatingSummaryView onPress={onPressRating} rating="placeholder" />
-              {notebook.ratings.slice(0, 10).map(rating => {
-                return <RatingSummaryView key={rating.id} rating={rating} onPress={onPressRating} />;
-              })}
+              {notebook.ratings.slice(0, MAX_RATINGS_PREVIEW).map((rating, index) => (
+                <Box
+                  marginRight={
+                    index === MAX_RATINGS_PREVIEW - 1 || index === notebook.ratings.length - 1 ? 'standard' : undefined
+                  }
+                >
+                  <RatingSummaryView key={rating.id} rating={rating} onPress={onPressRating} />
+                </Box>
+              ))}
             </ScrollView>
           </Box>
         );
