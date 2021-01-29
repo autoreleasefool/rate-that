@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {buildRequestUrl} from '../api';
 import {useConfiguration} from './useConfiguration';
+import {Movie} from '../schema';
 
 interface MovieSearchParams {
   query: string;
@@ -11,7 +12,7 @@ interface MovieSearchParams {
   // };
 }
 
-export interface MovieSearchResult {
+interface MovieSearchResult {
   id: number;
   title: string;
   release_date: string;
@@ -20,14 +21,14 @@ export interface MovieSearchResult {
 }
 
 export interface UseMovieResult {
-  results?: MovieSearchResult[];
+  results?: Movie[];
   error?: Error;
 }
 
 export const useMovieSearch = ({query}: MovieSearchParams): UseMovieResult => {
   const url = buildRequestUrl({path: 'search/movie', query: {query}});
   const configuration = useConfiguration();
-  const [results, setResults] = useState<MovieSearchResult[]>();
+  const [results, setResults] = useState<Movie[]>();
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
@@ -89,9 +90,12 @@ export const useMovieSearch = ({query}: MovieSearchParams): UseMovieResult => {
         },
       ];
       const res = fetchResults.map(result => ({
-        ...result,
-        poster_path: result.poster_path
-          ? `${configuration.images.secure_base_url}w185${result.poster_path}`
+        id: result.id,
+        title: result.title,
+        overview: result.overview,
+        releaseDate: result.release_date,
+        basePosterPath: result.poster_path
+          ? `${configuration.images.secure_base_url}{WIDTH}${result.poster_path}`
           : undefined,
       }));
       setResults(res);

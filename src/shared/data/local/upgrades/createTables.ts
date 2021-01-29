@@ -25,10 +25,10 @@ export async function createTables(tx: Transaction) {
       notebook_id INTEGER,
       title TEXT,
       value INTEGER,
-      image_url TEXT,
       created_at TEXT,
       updated_at TEXT,
       movie_id INTEGER,
+      movie_poster_path TEXT,
       FOREIGN KEY (notebook_id) REFERENCES Notebook(id)
     )
   `);

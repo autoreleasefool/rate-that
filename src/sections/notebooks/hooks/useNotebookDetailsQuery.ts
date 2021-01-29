@@ -25,9 +25,10 @@ interface NotebookDetailsQueryRow {
   ratingId: number;
   ratingTitle: string;
   ratingValue: number;
-  ratingImageUrl: string;
   ratingUpdatedAt: string;
   ratingCreatedAt: string;
+  ratingMovieId?: number;
+  ratingMoviePosterPath?: string;
 }
 
 export const useNotebookDetailsQuery = ({
@@ -53,9 +54,10 @@ export const useNotebookDetailsQuery = ({
       Rating.id as ratingId,
       Rating.title as ratingTitle,
       Rating.value as ratingValue,
-      Rating.image_url as ratingImageUrl,
       Rating.updated_at as ratingUpdatedAt,
-      Rating.created_at as ratingCreatedAt
+      Rating.created_at as ratingCreatedAt,
+      Rating.movie_id as ratingMovieId,
+      Rating.movie_poster_path as ratingMoviePosterPath
     FROM
       Notebook
     LEFT JOIN
@@ -78,7 +80,8 @@ export const useNotebookDetailsQuery = ({
         updatedAt: new Date(row.ratingUpdatedAt),
         value: row.ratingValue,
         title: row.ratingTitle,
-        imageUrl: row.ratingImageUrl,
+        movieId: row.ratingMovieId,
+        movieBasePosterPath: row.ratingMoviePosterPath,
       }));
 
     const value: Notebook = {

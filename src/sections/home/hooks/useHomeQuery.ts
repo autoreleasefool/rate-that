@@ -23,9 +23,10 @@ interface HomeQueryRow {
   ratingId: number;
   ratingTitle: string;
   ratingValue: number;
-  ratingImageUrl: string;
   ratingUpdatedAt: string;
   ratingCreatedAt: string;
+  ratingMovieId?: number;
+  ratingMoviePosterPath?: string;
 }
 
 export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResults => {
@@ -43,9 +44,10 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
       Rating.id as ratingId,
       Rating.title as ratingTitle,
       Rating.value as ratingValue,
-      Rating.image_url as ratingImageUrl,
       Rating.updated_at as ratingUpdatedAt,
-      Rating.created_at as ratingCreatedAt
+      Rating.created_at as ratingCreatedAt,
+      Rating.movie_id as ratingMovieId,
+      Rating.movie_poster_path as ratingMoviePosterPath
     FROM
       Notebook
     LEFT JOIN
@@ -82,7 +84,8 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
           updatedAt: new Date(row.ratingUpdatedAt),
           title: row.ratingTitle,
           value: row.ratingValue,
-          imageUrl: row.ratingImageUrl,
+          movieId: row.ratingMovieId,
+          movieBasePosterPath: row.ratingMoviePosterPath,
         });
       }
     }
@@ -102,8 +105,8 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
 const buildOrderByClause = (sortOrder: SortOrder): string => {
   switch (sortOrder) {
     case SortOrder.ALPHABETICAL:
-      return 'ORDER BY notebookTitle, notebookUpdatedAt, ratingUpdatedAt';
+      return 'ORDER BY notebookTitle, notebookUpdatedAt DESC, ratingUpdatedAt DESC';
     case SortOrder.RECENTLY_UPDATED:
-      return 'ORDER BY notebookUpdatedAt, ratingUpdatedAt';
+      return 'ORDER BY notebookUpdatedAt DESC, ratingUpdatedAt DESC';
   }
 };

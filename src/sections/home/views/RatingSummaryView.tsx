@@ -1,7 +1,8 @@
 import React, {useCallback} from 'react';
-import {Pressable} from 'react-native';
-import {Box, Text} from 'shared/components';
+import {Pressable, StyleSheet} from 'react-native';
+import {Box, FastImage, Text} from 'shared/components';
 import {Rating} from 'shared/data/local/schema';
+import {formatPosterPath} from 'shared/util/formatMovie';
 
 interface Props {
   rating: Rating | 'placeholder';
@@ -20,7 +21,6 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
   return (
     <Pressable onPress={commonOnPress}>
       {({pressed}) => {
-        const backgroundColor = pressed ? 'primaryPressed' : 'primary';
         return (
           <Box
             width={80}
@@ -30,13 +30,39 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
             shadowRadius={4}
             shadowOpacity={0.2}
             shadowOffset={{width: 2, height: 2}}
-            backgroundColor={backgroundColor}
+            backgroundColor={pressed ? 'primaryPressed' : 'primary'}
             marginLeft="standard"
             marginBottom="standard"
             alignItems="center"
             justifyContent="center"
+            overflow="hidden"
           >
-            {rating === 'placeholder' ? <Text variant="header">+</Text> : <Text variant="header">{rating.value}</Text>}
+            {rating !== 'placeholder' && rating.movieBasePosterPath && (
+              <Box style={StyleSheet.absoluteFill}>
+                <FastImage
+                  source={{uri: formatPosterPath(rating.movieBasePosterPath, 'w92')}}
+                  resizeMode="cover"
+                  style={StyleSheet.absoluteFill}
+                />
+                <Box style={StyleSheet.absoluteFill} backgroundColor="overlay" opacity={pressed ? 0.4 : 0} />
+              </Box>
+            )}
+            {rating === 'placeholder' ? (
+              <Text variant="header">+</Text>
+            ) : (
+              <Box
+                backgroundColor="black"
+                position="absolute"
+                right={0}
+                bottom={0}
+                borderTopLeftRadius="large"
+                overflow="hidden"
+              >
+                <Text variant="header" color="white" paddingHorizontal="small" paddingVertical="extraSmall">
+                  {rating.value}
+                </Text>
+              </Box>
+            )}
           </Box>
         );
       }}

@@ -22,5 +22,6 @@ export interface Notebook extends DataRow {
 export interface Rating extends DataRow {
   title: string;
   value: number;
-  imageUrl?: string;
+  movieId?: number;
+  movieBasePosterPath?: string;
 }

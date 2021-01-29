@@ -30,6 +30,9 @@ export const theme = createTheme({
     cardBackground: palette.white,
     cardBackgroundPressed: palette.lightGray,
 
+    white: palette.white,
+    black: palette.black,
+
     textPrimary: palette.black,
     textPrimaryContrasting: palette.white,
     textSecondary: palette.blackTransparent,
@@ -37,6 +40,7 @@ export const theme = createTheme({
 
     shadow: palette.black,
     divider: palette.black,
+    overlay: palette.black,
   },
   spacing: {
     extraSmall: 4,
