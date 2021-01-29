@@ -7,6 +7,7 @@ import {Box} from 'shared/components';
 import {theme, darkTheme} from 'shared/theme';
 import {EventBusContainer} from 'shared/util/EventBus';
 import {TMDbConfigurationContainer} from 'shared/data/tmdb/hooks/useConfiguration';
+import {DatabaseContainer} from 'shared/data/local/hooks/useDatabase';
 
 const StyledApp = () => {
   const colorScheme = useColorScheme();
@@ -22,11 +23,13 @@ const App = () => {
   return (
     <Box flex={1} backgroundColor="background">
       <EventBusContainer>
-        <TMDbConfigurationContainer>
-          <NavigationContainer>
-            <RootNavigator />
-          </NavigationContainer>
-        </TMDbConfigurationContainer>
+        <DatabaseContainer>
+          <TMDbConfigurationContainer>
+            <NavigationContainer>
+              <RootNavigator />
+            </NavigationContainer>
+          </TMDbConfigurationContainer>
+        </DatabaseContainer>
       </EventBusContainer>
     </Box>
   );

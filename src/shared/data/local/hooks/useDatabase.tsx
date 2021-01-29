@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {openDatabase, SQLiteDatabase} from 'react-native-sqlite-storage';
 import {createTables} from '../upgrades/createTables';
 
@@ -30,7 +30,7 @@ async function performUpdates(db: SQLiteDatabase, prevVersion: number, currentVe
   performUpdates(db, prevVersion + 1, currentVersion);
 }
 
-export const useDatabase = () => {
+const useOpenDatabase = (): SQLiteDatabase | undefined => {
   const [db, setDb] = useState<SQLiteDatabase>();
 
   useEffect(() => {
@@ -52,4 +52,16 @@ export const useDatabase = () => {
   }, [db, setDb]);
 
   return db;
+};
+
+const DatabaseContext = React.createContext<SQLiteDatabase | undefined>(undefined);
+
+export const DatabaseContainer = ({children}: {children: React.ReactElement}) => {
+  const database = useOpenDatabase();
+  return <DatabaseContext.Provider value={database}>{children}</DatabaseContext.Provider>;
+};
+
+export const useDatabase = () => {
+  const context = useContext(DatabaseContext);
+  return context;
 };
