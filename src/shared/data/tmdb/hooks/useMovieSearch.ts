@@ -27,17 +27,13 @@ export interface UseMovieResult {
 export const useMovieSearch = ({query}: MovieSearchParams): UseMovieResult => {
   const url = buildRequestUrl({path: 'search/movie', query: {query}});
   const configuration = useConfiguration();
-  // const [didPerformQuery, setDidPerformQuery] = useState(false);
   const [results, setResults] = useState<MovieSearchResult[]>();
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
-    // if (didPerformQuery) {
-    //   return;
-    // }
-
     const performQuery = async () => {
-      if (!configuration) {
+      if (!configuration || !query) {
+        setResults([]);
         return;
       }
 
@@ -95,10 +91,9 @@ export const useMovieSearch = ({query}: MovieSearchParams): UseMovieResult => {
       const res = fetchResults.map(result => ({
         ...result,
         poster_path: result.poster_path
-          ? `${configuration.images.secure_base_url}original${result.poster_path}`
+          ? `${configuration.images.secure_base_url}w185${result.poster_path}`
           : undefined,
       }));
-      console.log(res);
       setResults(res);
       // try {
       //   const result = await fetch(url);
@@ -111,7 +106,7 @@ export const useMovieSearch = ({query}: MovieSearchParams): UseMovieResult => {
 
     // setDidPerformQuery(true);
     performQuery();
-  }, [url, setError, setResults, configuration]);
+  }, [url, setError, setResults, configuration, query]);
 
   return {
     results,

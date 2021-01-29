@@ -2,7 +2,7 @@ import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useCallback, useState, useLayoutEffect} from 'react';
 import {FlatList} from 'react-native';
-import {Box, HeaderButton, SearchBar, TextField} from 'shared/components';
+import {Box, Divider, HeaderButton, SearchBar, TextField} from 'shared/components';
 import {useMovieSearch, MovieSearchResult} from 'shared/data/tmdb/hooks/useMovieSearch';
 import {useDebounce} from 'shared/util/useDebounce';
 
@@ -12,10 +12,13 @@ import {MovieResultView} from '../views/MovieResultView';
 
 interface SearchResultsProps {
   results: MovieSearchResult[];
+  onResultPress: (id: number) => void;
 }
 
-const SearchResults = ({results}: SearchResultsProps) => {
-  return <FlatList data={results} renderItem={({item}) => <MovieResultView movie={item} />} />;
+const SearchResults = ({results, onResultPress}: SearchResultsProps) => {
+  const renderItem = useCallback(({item}) => <MovieResultView movie={item} onPress={onResultPress} />, [onResultPress]);
+  const renderDivider = useCallback(() => <Divider style="inset" />, []);
+  return <FlatList data={results} renderItem={renderItem} ItemSeparatorComponent={renderDivider} />;
 };
 
 interface Props {
@@ -28,10 +31,11 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
 
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce({value: query, delay: 400});
-  const {results: searchResults} = useMovieSearch({query: debouncedQuery});
+  const {results: searchResults} = useMovieSearch({query: query ? debouncedQuery : query});
 
   const [ratingTitle, setRatingTitle] = useState('');
   const [ratingValue, setRatingValue] = useState(0);
+  const [movieId, setMovieId] = useState<number>();
 
   const onSave = useCallback(() => {
     addRating({title: ratingTitle, value: ratingValue, notebookId: route.params.notebookId});
@@ -45,7 +49,17 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
     });
   }, [navigation, onSave]);
 
-  const searchResultsContainer = searchResults ? <SearchResults results={searchResults} /> : null;
+  const onResultPress = useCallback(
+    (id: number) => {
+      setMovieId(id);
+      setQuery('');
+    },
+    [setMovieId],
+  );
+
+  const searchResultsContainer = searchResults ? (
+    <SearchResults results={searchResults} onResultPress={onResultPress} />
+  ) : null;
 
   return (
     <Box flex={1} backgroundColor="background">
