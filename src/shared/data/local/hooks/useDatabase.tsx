@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {openDatabase, SQLiteDatabase} from 'react-native-sqlite-storage';
+
 import {createTables} from '../upgrades/createTables';
 
 const DATABASE_VERSION = 1;
@@ -25,6 +26,7 @@ async function performUpdates(db: SQLiteDatabase, prevVersion: number, currentVe
   switch (prevVersion) {
     case 0:
       db.transaction(createTables);
+      break;
   }
 
   performUpdates(db, prevVersion + 1, currentVersion);
