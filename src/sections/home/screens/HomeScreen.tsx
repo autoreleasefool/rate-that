@@ -4,7 +4,6 @@ import {CompositeNavigationProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
 import {Box} from 'shared/components/Box';
-import {Divider} from 'shared/components/Divider';
 import {EmptyStateView} from 'shared/components/EmptyStateView';
 import {HeaderButton} from 'shared/components/header/HeaderButton';
 import {useEventBusConsumer} from 'shared/util/EventBus';

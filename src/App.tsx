@@ -6,6 +6,7 @@ import {RootNavigator} from 'navigation/RootNavigator';
 import {Box} from 'shared/components/Box';
 import {theme, darkTheme} from 'shared/theme';
 import {EventBusContainer} from 'shared/util/EventBus';
+import {TMDbConfigurationContainer} from 'shared/data/tmdb/hooks/useConfiguration';
 
 const StyledApp = () => {
   const colorScheme = useColorScheme();
@@ -21,9 +22,11 @@ const App = () => {
   return (
     <Box flex={1} backgroundColor="background">
       <EventBusContainer>
-        <NavigationContainer>
-          <RootNavigator />
-        </NavigationContainer>
+        <TMDbConfigurationContainer>
+          <NavigationContainer>
+            <RootNavigator />
+          </NavigationContainer>
+        </TMDbConfigurationContainer>
       </EventBusContainer>
     </Box>
   );

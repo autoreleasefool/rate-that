@@ -9,11 +9,14 @@ interface Props {
 }
 
 export const MovieResultView = ({movie}: Props) => {
-  const image = movie.poster_path ? <Image source={{uri: movie.poster_path}} width={80} height={120} /> : null;
+  // const image =  : null;
+  // console.log(image);
 
   return (
     <Box flexDirection="row" padding="standard">
-      {image}
+      {movie.poster_path && (
+        <Image source={{uri: movie.poster_path}} width={80} height={120} style={{width: 80, height: 120}} />
+      )}
       <Box flexDirection="column" marginHorizontal="standard">
         <Text variant="body">{movie.title}</Text>
         <Text variant="caption" marginTop="small">
