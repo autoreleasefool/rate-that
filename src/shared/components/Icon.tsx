@@ -5,10 +5,12 @@ import {Theme} from '../theme';
 
 import Close from 'assets/icons/close.svg';
 import Search from 'assets/icons/search.svg';
+import Star from 'assets/icons/star.svg';
 
 const iconMap = {
   close: Close,
   search: Search,
+  star: Star,
 };
 
 export type IconName = keyof typeof iconMap;
@@ -18,16 +20,18 @@ type IconSize = 'small' | 'medium' | 'large';
 interface Props {
   name: IconName;
   color?: keyof Theme['colors'];
+  fill?: keyof Theme['colors'];
   size?: IconSize;
 }
 
-export const Icon = ({name, color = 'textPrimary', size = 'medium'}: Props) => {
+export const Icon = ({name, color = 'textPrimary', fill, size = 'medium'}: Props) => {
   const theme = useTheme<Theme>();
   const IconComponent = iconMap[name];
   const iconColor = theme.colors[color];
+  const iconFill = fill ? theme.colors[fill] : undefined;
   const iconSize = getIconSize(size);
 
-  return <IconComponent width={iconSize} height={iconSize} style={{color: iconColor} as any} />;
+  return <IconComponent width={iconSize} height={iconSize} fill={iconFill} stroke={iconColor} />;
 };
 
 function getIconSize(size: IconSize): number {

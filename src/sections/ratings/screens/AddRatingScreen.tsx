@@ -2,7 +2,7 @@ import React, {useCallback, useState, useLayoutEffect} from 'react';
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {FlatList, ScrollView} from 'react-native';
-import {Box, Divider, FastImage, HeaderButton, SearchBar, TextField} from 'shared/components';
+import {Box, Divider, FastImage, HeaderButton, SearchBar, Text, TextField} from 'shared/components';
 import {useMovieSearch} from 'shared/data/tmdb/hooks/useMovieSearch';
 import {Movie} from 'shared/data/tmdb/schema';
 import {formatTitle, formatPosterPath} from 'shared/util/formatMovie';
@@ -11,6 +11,7 @@ import {useDebounce} from 'shared/util/useDebounce';
 import {useAddRating} from '../hooks/useAddRating';
 import {AddRatingStackParamList} from '../routes';
 import {MovieResultView} from '../views/MovieResultView';
+import {RatingBar} from '../views/RatingBar';
 
 interface SearchResultsProps {
   results: Movie[];
@@ -28,6 +29,8 @@ interface Props {
   route: RouteProp<AddRatingStackParamList, 'Index'>;
 }
 
+const MAX_RATING_VALUE = 10;
+
 export const AddRatingScreen = ({navigation, route}: Props) => {
   const addRating = useAddRating();
 
@@ -36,7 +39,7 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
   const {results: searchResults} = useMovieSearch({query: query ? debouncedQuery : query});
 
   const [ratingTitle, setRatingTitle] = useState('');
-  const [ratingValue, setRatingValue] = useState(0);
+  const [ratingValue, setRatingValue] = useState(5);
   const [movie, setMovie] = useState<Movie>();
 
   const onSave = useCallback(() => {
@@ -77,6 +80,8 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
     <SearchResults results={searchResults} onResultPress={onResultPress} />
   ) : null;
 
+  const currentRating = `${ratingValue} / ${MAX_RATING_VALUE}`;
+
   return (
     <Box flex={1} backgroundColor="background">
       <SearchBar query={query} placeholder={'Search'} onChange={setQuery} />
@@ -92,19 +97,30 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
                 resizeMode="cover"
               />
             )}
-            <TextField
-              title="Title"
-              placeholder="Avengers: Endgame (2019)"
-              onChangeText={onChangeTitle}
-              value={movie ? movie.title : ratingTitle}
-            />
+            <Box flexDirection="column" padding="standard" backgroundColor="cardBackground">
+              <Text variant="body" fontWeight="bold">
+                Title
+              </Text>
+              <TextField
+                placeholder="Avengers: Endgame (2019)"
+                onChangeText={onChangeTitle}
+                value={movie ? movie.title : ratingTitle}
+              />
+            </Box>
+
             <Divider style="full" />
-            <TextField
-              title="Rating"
-              placeholder="10"
-              value={String(ratingValue)}
-              onChangeText={(text: string) => setRatingValue(text ? parseInt(text, 10) : 0)}
-            />
+            <Box padding="standard" backgroundColor="cardBackground" justifyContent="center">
+              <Box flexDirection="row" justifyContent="space-between" alignItems="baseline">
+                <Text variant="body" fontWeight="bold">
+                  Rating
+                </Text>
+                <Text variant="caption">{currentRating}</Text>
+              </Box>
+              <Box marginTop="standard">
+                <RatingBar maximumRating={MAX_RATING_VALUE} value={ratingValue} onChangeRating={setRatingValue} />
+              </Box>
+            </Box>
+            <Divider style="full" />
           </Box>
         </ScrollView>
       </Box>

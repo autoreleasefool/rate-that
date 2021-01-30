@@ -49,6 +49,7 @@ export const NotebookSummaryContainer = ({notebook}: Props) => {
               <RatingSummaryView onPress={onPressRating} rating="placeholder" />
               {notebook.ratings.slice(0, MAX_RATINGS_PREVIEW).map((rating, index) => (
                 <Box
+                  key={rating.id}
                   marginRight={
                     index === MAX_RATINGS_PREVIEW - 1 || index === notebook.ratings.length - 1 ? 'standard' : undefined
                   }

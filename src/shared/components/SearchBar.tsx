@@ -90,16 +90,17 @@ export const SearchBar = ({query, placeholder, onChange}: Props) => {
           />
         </Box>
         <Animated.View style={animatedCloseStyle}>
-          <IconButton
-            onPress={blurInput}
-            disabled={!textInput.current?.isFocused}
-            color="textPrimary"
-            colorPressed="textSecondary"
-            name="close"
-            size="small"
-          />
+          <Box marginLeft="small">
+            <IconButton
+              onPress={blurInput}
+              disabled={!textInput.current?.isFocused}
+              color="textPrimary"
+              colorPressed="textSecondary"
+              name="close"
+              size="small"
+            />
+          </Box>
         </Animated.View>
-        {/* </Box> */}
       </Box>
     </Pressable>
   );

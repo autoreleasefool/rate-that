@@ -9,6 +9,8 @@ const palette = {
   darkGreen: '#013A20',
   lightGreen: '#BACC81',
 
+  yellow: '#F6C324',
+
   black: '#000000',
   darkGray: '#333333',
   lightGray: '#EFEFEF',
@@ -25,6 +27,8 @@ export const theme = createTheme({
 
     primaryPressed: palette.blue,
     secondaryPressed: palette.green,
+
+    highlight: palette.yellow,
 
     background: palette.lightGray,
     cardBackground: palette.white,

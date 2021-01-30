@@ -1,8 +1,8 @@
 import React, {ComponentProps} from 'react';
 import {Pressable} from 'react-native';
-import {Theme} from 'shared/theme';
+import {useTheme} from '@shopify/restyle';
 
-import {Box} from './Box';
+import {Theme} from '../theme';
 import {Icon} from './Icon';
 
 interface Props extends ComponentProps<typeof Icon> {
@@ -12,15 +12,13 @@ interface Props extends ComponentProps<typeof Icon> {
 }
 
 export const IconButton = ({onPress, colorPressed, disabled, ...iconProps}: Props) => {
+  const theme = useTheme<Theme>();
+
   return (
-    <Pressable onPress={onPress} disabled={disabled}>
+    <Pressable onPress={onPress} hitSlop={theme.spacing.small} disabled={disabled}>
       {({pressed}) => {
         const color = pressed && colorPressed ? colorPressed : iconProps.color;
-        return (
-          <Box padding="small">
-            <Icon {...iconProps} color={color} />
-          </Box>
-        );
+        return <Icon {...iconProps} color={color} />;
       }}
     </Pressable>
   );
