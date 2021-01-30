@@ -2,7 +2,7 @@ export {Box} from './Box';
 export {Divider} from './Divider';
 export {EmptyStateView} from './EmptyStateView';
 export {HeaderButton} from './HeaderButton';
-export {Icon} from './Icon';
+export {Icon, IconName, IconSize} from './Icon';
 export {IconButton} from './IconButton';
 export {FastImage} from './FastImage';
 export {SearchBar} from './SearchBar';

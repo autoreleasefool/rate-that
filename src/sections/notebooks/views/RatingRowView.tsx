@@ -1,5 +1,6 @@
 import React from 'react';
 import {Pressable} from 'react-native';
+import {RatingBar} from 'sections/ratings/views/RatingBar';
 import {Box, FastImage, Icon, Text} from 'shared/components';
 import {Rating} from 'shared/data/local/schema';
 import {formatPosterPath} from 'shared/util/formatMovie';
@@ -13,6 +14,7 @@ interface Props {
 export const RatingRowView = ({rating, isFirstItem, isLastItem}: Props) => {
   const topBorderRadius = isFirstItem ? 'large' : undefined;
   const bottomBorderRadius = isLastItem ? 'large' : undefined;
+  const currentRating = `${rating.value} / 10`;
 
   return (
     <Pressable>
@@ -51,7 +53,11 @@ export const RatingRowView = ({rating, isFirstItem, isLastItem}: Props) => {
             <Text variant="body" fontWeight="bold">
               {rating.title}
             </Text>
-            {/* <Text */}
+            <Box flex={1} />
+            <RatingBar value={rating.value} size="small" disabled />
+            <Text variant="caption" marginTop="small">
+              {currentRating}
+            </Text>
           </Box>
         </Box>
       )}

@@ -17,7 +17,7 @@ const iconMap = {
 
 export type IconName = keyof typeof iconMap;
 
-type IconSize = 'small' | 'medium' | 'large';
+export type IconSize = 'small' | 'medium' | 'large';
 
 interface Props {
   name: IconName;
