@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {Pressable, ScrollView} from 'react-native';
+import {Pressable, ScrollView, StyleSheet} from 'react-native';
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
@@ -41,7 +41,18 @@ export const NotebookSummaryContainer = ({notebook}: Props) => {
         const backgroundColor = pressed ? 'cardBackgroundPressed' : 'cardBackground';
 
         return (
-          <Box backgroundColor={backgroundColor} marginTop="standard" marginHorizontal="standard" borderRadius="large">
+          <Box
+            backgroundColor={backgroundColor}
+            marginTop="standard"
+            marginHorizontal="standard"
+            borderWidth={StyleSheet.hairlineWidth}
+            borderColor="divider"
+            borderRadius="large"
+            shadowColor="shadow"
+            shadowRadius={2}
+            shadowOpacity={0.4}
+            shadowOffset={{width: 2, height: 2}}
+          >
             <Text variant="subheader" margin="standard">
               {notebook.title}
             </Text>

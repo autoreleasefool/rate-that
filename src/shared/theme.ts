@@ -45,7 +45,7 @@ export const theme = createTheme({
     textSecondaryContrasting: palette.whiteTransparent,
 
     shadow: palette.black,
-    divider: palette.black,
+    divider: palette.blackTransparent,
     overlay: palette.black,
   },
   spacing: {

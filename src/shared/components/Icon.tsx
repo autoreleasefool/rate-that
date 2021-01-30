@@ -4,11 +4,13 @@ import {useTheme} from '@shopify/restyle';
 import {Theme} from '../theme';
 
 import Close from 'assets/icons/close.svg';
+import NoImage from 'assets/icons/no-image.svg';
 import Search from 'assets/icons/search.svg';
 import Star from 'assets/icons/star.svg';
 
 const iconMap = {
   close: Close,
+  noImage: NoImage,
   search: Search,
   star: Star,
 };

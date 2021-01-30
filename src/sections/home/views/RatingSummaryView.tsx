@@ -27,24 +27,29 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
             height={120}
             borderRadius="large"
             shadowColor="shadow"
-            shadowRadius={4}
-            shadowOpacity={0.2}
+            shadowRadius={2}
+            shadowOpacity={0.4}
             shadowOffset={{width: 2, height: 2}}
             backgroundColor={pressed ? 'primaryPressed' : 'primary'}
             marginLeft="standard"
             marginBottom="standard"
             alignItems="center"
             justifyContent="center"
-            overflow="hidden"
           >
             {rating !== 'placeholder' && rating.movieBasePosterPath && (
               <Box style={StyleSheet.absoluteFill}>
                 <FastImage
+                  borderRadius="large"
                   source={{uri: formatPosterPath(rating.movieBasePosterPath, 'w92')}}
                   resizeMode="cover"
                   style={StyleSheet.absoluteFill}
                 />
-                <Box style={StyleSheet.absoluteFill} backgroundColor="overlay" opacity={pressed ? 0.4 : 0} />
+                <Box
+                  style={StyleSheet.absoluteFill}
+                  backgroundColor="overlay"
+                  opacity={pressed ? 0.4 : 0}
+                  borderRadius="large"
+                />
               </Box>
             )}
             {rating === 'placeholder' ? (
@@ -56,6 +61,7 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
                 right={0}
                 bottom={0}
                 borderTopLeftRadius="large"
+                borderBottomRightRadius="large"
                 overflow="hidden"
               >
                 <Text variant="header" color="white" paddingHorizontal="small" paddingVertical="extraSmall">
