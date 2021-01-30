@@ -15,12 +15,17 @@ type NavigationProp = CompositeNavigationProp<
 >;
 interface Props {
   notebook: Notebook;
+  isFirstItem: boolean;
+  isLastItem: boolean;
 }
 
 const MAX_RATINGS_PREVIEW = 10;
 
-export const NotebookSummaryContainer = ({notebook}: Props) => {
+export const NotebookSummaryContainer = ({notebook, isFirstItem, isLastItem}: Props) => {
   const navigation = useNavigation<NavigationProp>();
+
+  const topBorderRadius = isFirstItem ? 'large' : undefined;
+  const bottomBorderRadius = isLastItem ? 'large' : undefined;
 
   const openNotebookDetails = useCallback(() => {
     navigation.navigate('NotebookDetails', {notebookId: notebook.id});
@@ -43,15 +48,11 @@ export const NotebookSummaryContainer = ({notebook}: Props) => {
         return (
           <Box
             backgroundColor={backgroundColor}
-            marginTop="standard"
-            marginHorizontal="standard"
-            borderWidth={StyleSheet.hairlineWidth}
-            borderColor="divider"
-            borderRadius="large"
-            shadowColor="shadow"
-            shadowRadius={2}
-            shadowOpacity={0.4}
-            shadowOffset={{width: 2, height: 2}}
+            marginTop={isFirstItem ? 'standard' : undefined}
+            borderTopLeftRadius={topBorderRadius}
+            borderTopRightRadius={topBorderRadius}
+            borderBottomLeftRadius={bottomBorderRadius}
+            borderBottomRightRadius={bottomBorderRadius}
           >
             <Text variant="subheader" margin="standard">
               {notebook.title}

@@ -3,7 +3,7 @@ import {FlatList, RefreshControl} from 'react-native';
 import {CompositeNavigationProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
-import {Box, EmptyStateView, HeaderButton} from 'shared/components';
+import {Box, Divider, EmptyStateView, HeaderButton} from 'shared/components';
 import {useEventBusConsumer} from 'shared/util/EventBus';
 
 import {useHomeQuery} from '../hooks/useHomeQuery';
@@ -33,12 +33,18 @@ export const HomeScreen = ({navigation}: Props) => {
   }, [navigation]);
 
   return (
-    <Box flex={1} backgroundColor="background">
+    <Box flex={1} backgroundColor="background" paddingHorizontal="standard">
       <FlatList
         data={notebooks}
-        renderItem={({item}) => <NotebookSummaryContainer notebook={item} />}
-        keyExtractor={({id}) => `${id}`}
+        renderItem={({item, index}) => (
+          <NotebookSummaryContainer
+            notebook={item}
+            isFirstItem={index === 0}
+            isLastItem={index + 1 === notebooks?.length}
+          />
+        )}
         refreshControl={<RefreshControl refreshing={isLoading || isRefreshing} onRefresh={refresh} />}
+        ItemSeparatorComponent={Divider}
         ListEmptyComponent={<EmptyStateView title="No notebooks found" />}
       />
     </Box>
