@@ -1,5 +1,11 @@
 import {Transaction} from 'react-native-sqlite-storage';
 
+export async function dropTables(tx: Transaction) {
+  tx.executeSql('DROP TABLE IF EXISTS Version;');
+  tx.executeSql('DROP TABLE IF EXISTS Rating;');
+  tx.executeSql('DROP TABLE IF EXISTS Notebook;');
+}
+
 export async function createTables(tx: Transaction) {
   tx.executeSql(`
     CREATE TABLE IF NOT EXISTS Version(
@@ -29,6 +35,7 @@ export async function createTables(tx: Transaction) {
       updated_at TEXT,
       movie_id INTEGER,
       movie_poster_path TEXT,
+      image_url TEXT,
       FOREIGN KEY (notebook_id) REFERENCES Notebook(id)
     )
   `);
