@@ -30,7 +30,7 @@ export const useRatingDetailsQuery = ({id}: RatingDetailsQueryProps) => {
         Rating.title as title,
         Rating.value as value,
         Rating.movie_id as movieId,
-        Rating.movie_base_poster_path as movieBasePosterPath
+        Rating.movie_poster_path as movieBasePosterPath,
         Rating.image_url as imageUrl
       FROM
         Rating

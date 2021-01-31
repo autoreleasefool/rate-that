@@ -33,8 +33,10 @@ export const NotebookSummaryContainer = ({notebook, isFirstItem, isLastItem}: Pr
 
   const onPressRating = useCallback(
     (rating?: Rating) => {
-      if (!rating) {
-        navigation.navigate('AddRating', {screen: 'Index', params: {notebookId: notebook.id}});
+      if (rating) {
+        navigation.navigate('AddRating', {screen: 'Edit', params: {ratingId: rating.id}});
+      } else {
+        navigation.navigate('AddRating', {screen: 'Add', params: {notebookId: notebook.id}});
       }
     },
     [navigation, notebook],

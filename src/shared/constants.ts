@@ -2,6 +2,7 @@ import {Notebook, Rating} from './data/local/schema';
 
 export interface EventPayload {
   AddNotebook: Notebook;
+  DeleteNotebook: undefined;
   AddRating: Rating;
   EditRating: Rating;
   ResetDatabase: undefined;

@@ -29,13 +29,15 @@ const SearchResults = ({results, onResultPress}: SearchResultsProps) => {
 };
 
 interface Props {
-  navigation: StackNavigationProp<AddRatingStackParamList, 'Index'>;
-  route: RouteProp<AddRatingStackParamList, 'Index'>;
+  navigation: StackNavigationProp<AddRatingStackParamList, 'Add' | 'Edit'>;
+  route: RouteProp<AddRatingStackParamList, 'Add' | 'Edit'>;
 }
 
 export const AddRatingScreen = ({navigation, route}: Props) => {
   const saveRating = useSaveRating();
-  const {data: existingRating} = useRatingDetailsQuery({id: route.params.ratingId});
+  const {data: existingRating} = useRatingDetailsQuery({
+    id: 'ratingId' in route.params ? route.params.ratingId : undefined,
+  });
 
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce({value: query, delay: 400});
@@ -67,7 +69,7 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
     const title = movie ? formatTitle(movie) : ratingTitle;
     const value = ratingValue;
     const date = ratingDate;
-    const notebookId = route.params.notebookId;
+    const notebookId = 'notebookId' in route.params ? route.params.notebookId : -1;
     const imageUrl: RatingImage | undefined = movie?.basePosterPath
       ? {basePosterPath: movie.basePosterPath}
       : undefined;
@@ -78,7 +80,7 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
       saveRating({movieId: movie?.id, imageUrl, date, title, value, notebookId});
     }
     navigation.pop();
-  }, [existingRating, saveRating, ratingTitle, ratingValue, ratingDate, navigation, route.params.notebookId, movie]);
+  }, [existingRating, saveRating, ratingTitle, ratingValue, ratingDate, navigation, route.params, movie]);
 
   const onResultPress = useCallback(
     (newMovie: Movie) => {

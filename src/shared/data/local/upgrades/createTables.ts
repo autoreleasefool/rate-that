@@ -16,7 +16,7 @@ export async function createTables(tx: Transaction) {
 
   tx.executeSql(`
     CREATE TABLE IF NOT EXISTS Notebook(
-      id INTEGER PRIMARY KEY NOT NULL,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT,
       type_id INTEGER,
       created_at TEXT,
@@ -27,7 +27,7 @@ export async function createTables(tx: Transaction) {
 
   tx.executeSql(`
     CREATE TABLE IF NOT EXISTS Rating(
-      id INTEGER PRIMARY KEY NOT NULL,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       notebook_id INTEGER,
       title TEXT,
       value INTEGER,

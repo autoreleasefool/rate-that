@@ -71,8 +71,8 @@ export const useSaveRating = () => {
               (
                 ${notebookId},
                 ${movieId ?? 'null'},
-                "${typeof imageUrl === 'string' ? 'null' : imageUrl?.basePosterPath}"
-                "${typeof imageUrl === 'string' ? imageUrl : 'null'}"
+                ${imageUrl && typeof imageUrl !== 'string' ? `"${imageUrl.basePosterPath}"` : 'null'},
+                ${imageUrl && typeof imageUrl === 'string' ? `"${imageUrl}"` : 'null'},
                 "${title}",
                 ${value},
                 "${now}",

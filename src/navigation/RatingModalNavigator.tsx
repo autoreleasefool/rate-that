@@ -17,7 +17,8 @@ export const RatingModalNavigator = () => {
         headerTintColor: theme.colors.textPrimary,
       }}
     >
-      <Stack.Screen name="Index" component={AddRatingScreen} options={{headerTitle: 'Add rating'}} />
+      <Stack.Screen name="Add" component={AddRatingScreen} options={{headerTitle: 'Add rating'}} />
+      <Stack.Screen name="Edit" component={AddRatingScreen} options={{headerTitle: 'Edit rating'}} />
     </Stack.Navigator>
   );
 };

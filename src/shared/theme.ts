@@ -11,6 +11,10 @@ const palette = {
 
   yellow: '#F6C324',
 
+  red: '#E7625F',
+  darkRed: '#C85250',
+  lightRed: '#F7BEC0',
+
   black: '#000000',
   darkGray: '#333333',
   lightGray: '#EFEFEF',
@@ -29,6 +33,8 @@ export const theme = createTheme({
     secondaryPressed: palette.green,
 
     highlight: palette.yellow,
+    destructive: palette.red,
+    destructivePressed: palette.darkRed,
 
     background: palette.lightGray,
     cardBackground: palette.white,

@@ -4,15 +4,16 @@ import {format as formatDate, isSameYear} from 'date-fns';
 import {RatingBar} from 'sections/ratings/views/RatingBar';
 import {Box, FastImage, Icon, Text} from 'shared/components';
 import {Rating} from 'shared/data/local/schema';
-import {formatPosterPath} from 'shared/util/formatMovie';
+import {formatRatingImageUrl} from 'shared/util/formatRating';
 
 interface Props {
   rating: Rating;
   isFirstItem: boolean;
   isLastItem: boolean;
+  onPress: () => void;
 }
 
-export const RatingRowView = ({rating, isFirstItem, isLastItem}: Props) => {
+export const RatingRowView = ({rating, isFirstItem, isLastItem, onPress}: Props) => {
   const topBorderRadius = isFirstItem ? 'large' : undefined;
   const bottomBorderRadius = isLastItem ? 'large' : undefined;
 
@@ -26,7 +27,7 @@ export const RatingRowView = ({rating, isFirstItem, isLastItem}: Props) => {
   const currentRating = `${rating.value} / 10`;
 
   return (
-    <Pressable>
+    <Pressable onPress={onPress}>
       {({pressed}) => (
         <Box
           flexDirection="row"
@@ -37,9 +38,9 @@ export const RatingRowView = ({rating, isFirstItem, isLastItem}: Props) => {
           borderBottomLeftRadius={bottomBorderRadius}
           borderBottomRightRadius={bottomBorderRadius}
         >
-          {rating.movieBasePosterPath ? (
+          {rating.imageUrl ? (
             <FastImage
-              source={{uri: formatPosterPath(rating.movieBasePosterPath, 'w185')}}
+              source={{uri: formatRatingImageUrl(rating.imageUrl, 'w185')}}
               width={80}
               height={120}
               borderTopLeftRadius={topBorderRadius}
@@ -49,13 +50,13 @@ export const RatingRowView = ({rating, isFirstItem, isLastItem}: Props) => {
             <Box
               width={80}
               height={120}
-              backgroundColor="background"
+              backgroundColor="primary"
               justifyContent="center"
               alignItems="center"
               borderTopLeftRadius={topBorderRadius}
               borderBottomLeftRadius={bottomBorderRadius}
             >
-              <Icon name="noImage" color="textPrimary" size="medium" />
+              <Icon name="noImage" color="white" size="medium" />
             </Box>
           )}
           <Box flexDirection="column" margin="small">

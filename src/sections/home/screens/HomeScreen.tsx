@@ -24,7 +24,10 @@ export const HomeScreen = ({navigation}: Props) => {
   const resetDb = useResetDatabase();
   const {isRefreshing, data: notebooks, refresh} = useHomeQuery({filter: ''});
 
-  useEventBusConsumer({eventIds: ['AddNotebook', 'AddRating', 'ResetDatabase'], observer: refresh});
+  useEventBusConsumer({
+    eventIds: ['AddNotebook', 'DeleteNotebook', 'AddRating', 'EditRating', 'ResetDatabase'],
+    observer: refresh,
+  });
 
   useLayoutEffect(() => {
     navigation.setOptions({
