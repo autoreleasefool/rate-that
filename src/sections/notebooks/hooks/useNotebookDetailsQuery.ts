@@ -29,6 +29,7 @@ interface NotebookDetailsQueryRow {
   ratingCreatedAt: string;
   ratingMovieId?: number;
   ratingMoviePosterPath?: string;
+  ratingImageUrl?: string;
 }
 
 export const useNotebookDetailsQuery = ({
@@ -57,7 +58,8 @@ export const useNotebookDetailsQuery = ({
       Rating.updated_at as ratingUpdatedAt,
       Rating.created_at as ratingCreatedAt,
       Rating.movie_id as ratingMovieId,
-      Rating.movie_poster_path as ratingMoviePosterPath
+      Rating.movie_poster_path as ratingMoviePosterPath,
+      Rating.image_url as ratingImageUrl
     FROM
       Notebook
     LEFT JOIN
@@ -67,24 +69,30 @@ export const useNotebookDetailsQuery = ({
     `,
   });
 
-  const notebook = useMemo(() => {
+  const notebook = useMemo((): Notebook | undefined => {
     if (!data) {
       return;
     }
 
-    const ratings: Rating[] = data
+    const ratings = data
       .filter(row => row.ratingId)
-      .map(row => ({
-        id: row.ratingId,
-        createdAt: new Date(row.ratingCreatedAt),
-        updatedAt: new Date(row.ratingUpdatedAt),
-        value: row.ratingValue,
-        title: row.ratingTitle,
-        movieId: row.ratingMovieId,
-        movieBasePosterPath: row.ratingMoviePosterPath,
-      }));
+      .map(
+        (row): Rating => ({
+          id: row.ratingId,
+          createdAt: new Date(row.ratingCreatedAt),
+          updatedAt: new Date(row.ratingUpdatedAt),
+          value: row.ratingValue,
+          title: row.ratingTitle,
+          movieId: row.ratingMovieId,
+          imageUrl: row.ratingImageUrl
+            ? row.ratingImageUrl
+            : row.ratingMoviePosterPath
+            ? {basePosterPath: row.ratingMoviePosterPath}
+            : undefined,
+        }),
+      );
 
-    const value: Notebook = {
+    return {
       id: data[0].notebookId,
       createdAt: new Date(data[0].notebookCreatedAt),
       updatedAt: new Date(data[0].notebookUpdatedAt),
@@ -92,8 +100,6 @@ export const useNotebookDetailsQuery = ({
       type: data[0].notebookType,
       ratings,
     };
-
-    return value;
   }, [data]);
 
   return {

@@ -1,17 +1,21 @@
-import React, {useCallback, useState, useLayoutEffect} from 'react';
+import React, {useCallback, useState, useLayoutEffect, useEffect} from 'react';
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {FlatList, ScrollView} from 'react-native';
+import {FlatList, ScrollView, StyleSheet} from 'react-native';
 import {Box, Divider, FastImage, HeaderButton, SearchBar, Text, TextField} from 'shared/components';
 import {useMovieSearch} from 'shared/data/tmdb/hooks/useMovieSearch';
 import {Movie} from 'shared/data/tmdb/schema';
-import {formatTitle, formatPosterPath} from 'shared/util/formatMovie';
+import {formatTitle} from 'shared/util/formatMovie';
 import {useDebounce} from 'shared/util/useDebounce';
+import {MAX_RATING_VALUE} from 'shared/constants';
+import {RatingImage} from 'shared/data/local/schema';
+import {formatRatingImageUrl} from 'shared/util/formatRating';
 
-import {useAddRating} from '../hooks/useAddRating';
+import {useSaveRating} from '../hooks/useSaveRating';
 import {AddRatingStackParamList} from '../routes';
 import {MovieResultView} from '../views/MovieResultView';
 import {RatingBar} from '../views/RatingBar';
+import {useRatingDetailsQuery} from '../hooks/useRatingDetailsQuery';
 
 interface SearchResultsProps {
   results: Movie[];
@@ -29,27 +33,52 @@ interface Props {
   route: RouteProp<AddRatingStackParamList, 'Index'>;
 }
 
-const MAX_RATING_VALUE = 10;
-
 export const AddRatingScreen = ({navigation, route}: Props) => {
-  const addRating = useAddRating();
+  const saveRating = useSaveRating();
+  const {data: existingRating} = useRatingDetailsQuery({id: route.params.ratingId});
 
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce({value: query, delay: 400});
   const {results: searchResults} = useMovieSearch({query: query ? debouncedQuery : query});
 
+  const [didSetRatingProperties, setDidSetRatingProperties] = useState(false);
   const [ratingTitle, setRatingTitle] = useState('');
   const [ratingValue, setRatingValue] = useState(5);
+  const [ratingDate, setRatingDate] = useState(new Date());
   const [movie, setMovie] = useState<Movie>();
+
+  useEffect(() => {
+    if (existingRating && !didSetRatingProperties) {
+      setDidSetRatingProperties(true);
+      setRatingTitle(existingRating.title);
+      setRatingValue(existingRating.value);
+      setRatingDate(existingRating.updatedAt);
+    }
+  }, [
+    existingRating,
+    setRatingTitle,
+    setRatingValue,
+    setRatingDate,
+    didSetRatingProperties,
+    setDidSetRatingProperties,
+  ]);
 
   const onSave = useCallback(() => {
     const title = movie ? formatTitle(movie) : ratingTitle;
     const value = ratingValue;
+    const date = ratingDate;
     const notebookId = route.params.notebookId;
+    const imageUrl: RatingImage | undefined = movie?.basePosterPath
+      ? {basePosterPath: movie.basePosterPath}
+      : undefined;
 
-    addRating({movie, title, value, notebookId});
+    if (existingRating) {
+      saveRating({ratingId: existingRating.id, value, date});
+    } else {
+      saveRating({movieId: movie?.id, imageUrl, date, title, value, notebookId});
+    }
     navigation.pop();
-  }, [addRating, ratingTitle, ratingValue, navigation, route.params.notebookId, movie]);
+  }, [existingRating, saveRating, ratingTitle, ratingValue, ratingDate, navigation, route.params.notebookId, movie]);
 
   const onResultPress = useCallback(
     (newMovie: Movie) => {
@@ -80,18 +109,24 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
     <SearchResults results={searchResults} onResultPress={onResultPress} />
   ) : null;
 
+  const isCreatingRating = existingRating === undefined;
   const currentRating = `${ratingValue} / ${MAX_RATING_VALUE}`;
+  const imageUrl = movie?.basePosterPath ? {basePosterPath: movie.basePosterPath} : undefined;
 
   return (
     <Box flex={1} backgroundColor="background">
-      <SearchBar query={query} placeholder={'Search'} onChange={setQuery} />
+      <Box visible={isCreatingRating}>
+        <SearchBar query={query} placeholder={'Search'} onChange={setQuery} />
+      </Box>
       <Box flex={1}>
-        <Box zIndex={1}>{searchResultsContainer}</Box>
-        <ScrollView>
-          <Box flex={1} zIndex={0}>
-            {movie?.basePosterPath && (
+        <Box visible={isCreatingRating} zIndex={1}>
+          {searchResultsContainer}
+        </Box>
+        <ScrollView style={styles.scrollView}>
+          <Box flex={1}>
+            {imageUrl && (
               <FastImage
-                source={{uri: formatPosterPath(movie.basePosterPath, 'w780')}}
+                source={{uri: formatRatingImageUrl(imageUrl, 'w780')}}
                 flex={1}
                 height={120}
                 resizeMode="cover"
@@ -105,6 +140,7 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
                 placeholder="Avengers: Endgame (2019)"
                 onChangeText={onChangeTitle}
                 value={movie ? movie.title : ratingTitle}
+                editable={isCreatingRating}
               />
             </Box>
 
@@ -127,3 +163,9 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
     </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  scrollView: {
+    zIndex: 0,
+  },
+});

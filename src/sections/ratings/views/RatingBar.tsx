@@ -5,7 +5,7 @@ interface Props {
   maximumRating?: number;
   value: number;
   onChangeRating?: (rating: number) => void;
-  disabled: boolean;
+  disabled?: boolean;
   size?: IconSize;
 }
 

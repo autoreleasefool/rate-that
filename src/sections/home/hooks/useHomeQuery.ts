@@ -27,6 +27,7 @@ interface HomeQueryRow {
   ratingCreatedAt: string;
   ratingMovieId?: number;
   ratingMoviePosterPath?: string;
+  ratingImageUrl?: string;
 }
 
 export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResults => {
@@ -47,7 +48,8 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
       Rating.updated_at as ratingUpdatedAt,
       Rating.created_at as ratingCreatedAt,
       Rating.movie_id as ratingMovieId,
-      Rating.movie_poster_path as ratingMoviePosterPath
+      Rating.movie_poster_path as ratingMoviePosterPath,
+      Rating.image_url as ratingImageUrl
     FROM
       Notebook
     LEFT JOIN
@@ -85,7 +87,11 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
           title: row.ratingTitle,
           value: row.ratingValue,
           movieId: row.ratingMovieId,
-          movieBasePosterPath: row.ratingMoviePosterPath,
+          imageUrl: row.ratingImageUrl
+            ? row.ratingImageUrl
+            : row.ratingMoviePosterPath
+            ? {basePosterPath: row.ratingMoviePosterPath}
+            : undefined,
         });
       }
     }

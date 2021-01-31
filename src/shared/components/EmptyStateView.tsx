@@ -10,15 +10,13 @@ interface EmptyStateProps {
 
 export const EmptyStateView = ({title, subtitle}: EmptyStateProps) => {
   return (
-    <Box flex={1}>
-      <Box margin="standard">
-        <Text variant="header">{title}</Text>
-        {subtitle ? (
-          <Text variant="body" marginTop="standard">
-            {subtitle}
-          </Text>
-        ) : null}
-      </Box>
+    <Box flex={1} margin="standard" justifyContent="center" alignItems="center">
+      <Text variant="subheader">{title}</Text>
+      {subtitle ? (
+        <Text variant="body" marginTop="standard">
+          {subtitle}
+        </Text>
+      ) : null}
     </Box>
   );
 };

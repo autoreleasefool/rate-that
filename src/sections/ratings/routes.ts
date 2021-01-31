@@ -1,3 +1,3 @@
 export type AddRatingStackParamList = {
-  Index: {notebookId: number};
+  Index: {notebookId: number; ratingId?: number};
 };

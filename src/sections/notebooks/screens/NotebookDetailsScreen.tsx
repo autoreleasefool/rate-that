@@ -20,7 +20,7 @@ interface Props {
 }
 
 export const NotebookDetailsScreen = ({navigation, route}: Props) => {
-  const {data, isLoading, isRefreshing, error, refresh} = useNotebookDetailsQuery({id: route.params.notebookId});
+  const {data, isRefreshing, refresh} = useNotebookDetailsQuery({id: route.params.notebookId});
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -32,7 +32,7 @@ export const NotebookDetailsScreen = ({navigation, route}: Props) => {
     <Box flex={1} backgroundColor="background" paddingHorizontal="standard">
       <FlatList
         data={data?.ratings ?? []}
-        refreshControl={<RefreshControl refreshing={isLoading || isRefreshing} onRefresh={refresh} />}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
         renderItem={({item, index}) => (
           <RatingRowView rating={item} isFirstItem={index === 0} isLastItem={index + 1 === data?.ratings.length} />
         )}
