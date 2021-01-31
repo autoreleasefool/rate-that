@@ -30,7 +30,7 @@ export const HomeScreen = ({navigation}: Props) => {
     navigation.setOptions({
       headerLeft: () => (__DEV__ ? <HeaderButton onPress={() => resetDb()} title="Reset" /> : null),
       headerRight: () => (
-        <HeaderButton onPress={() => navigation.navigate('AddNotebook', {screen: 'Index'})} title="Add" />
+        <HeaderButton onPress={() => navigation.navigate('AddNotebook', {screen: 'Index'})} icon="plus" />
       ),
     });
   }, [navigation, resetDb]);

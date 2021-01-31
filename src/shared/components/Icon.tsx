@@ -5,19 +5,21 @@ import {Theme} from '../theme';
 
 import Close from 'assets/icons/close.svg';
 import NoImage from 'assets/icons/no-image.svg';
+import Plus from 'assets/icons/plus.svg';
 import Search from 'assets/icons/search.svg';
 import Star from 'assets/icons/star.svg';
 
 const iconMap = {
   close: Close,
   noImage: NoImage,
+  plus: Plus,
   search: Search,
   star: Star,
 };
 
 export type IconName = keyof typeof iconMap;
 
-export type IconSize = 'small' | 'medium' | 'large';
+export type IconSize = 'small' | 'medium' | 'large' | 'header';
 
 interface Props {
   name: IconName;
@@ -40,6 +42,8 @@ function getIconSize(size: IconSize): number {
   switch (size) {
     case 'small':
       return 16;
+    case 'header':
+      return 24;
     case 'medium':
       return 32;
     case 'large':
