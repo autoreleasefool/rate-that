@@ -6,6 +6,7 @@ import {useEventBusProducer} from 'shared/util/EventBus';
 interface AddNotebookParams {
   title: string;
   type: NotebookType;
+  hasImages: boolean;
 }
 
 export const useAddNotebook = () => {
@@ -13,18 +14,18 @@ export const useAddNotebook = () => {
   const produceAddNotebookEvent = useEventBusProducer({eventId: 'AddNotebook'});
 
   return useCallback(
-    ({title, type}: AddNotebookParams) => {
+    ({title, type, hasImages}: AddNotebookParams) => {
       async function addNotebook() {
         if (!db) {
           return;
         }
-        const now = new Date().toISOString();
+        const now = new Date();
         try {
           // TODO: handle errors
           await db.executeSql(`
-          INSERT INTO Notebook (title, type_id, created_at, updated_at) VALUES
-            ("${title}", ${type}, "${now}", "${now}");
-        `);
+            INSERT INTO Notebook (title, type_id, created_at, updated_at, has_images) VALUES
+              ("${title}", ${type}, "${now.toISOString()}", "${now.toISOString()}", ${hasImages ? 1 : 0});
+          `);
         } catch (err) {
           console.error(err);
         }

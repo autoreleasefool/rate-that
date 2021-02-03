@@ -1,7 +1,7 @@
 import React, {useCallback, useState, useLayoutEffect} from 'react';
-import {TextInput} from 'react-native';
+import {TextInput, ScrollView, Switch} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Box, HeaderButton, Text} from 'shared/components';
+import {Box, Divider, HeaderButton, Text, TextField} from 'shared/components';
 import {NotebookType} from 'shared/data/local/schema';
 
 import {useAddNotebook} from '../hooks/useAddNotebook';
@@ -16,12 +16,14 @@ interface Props {
 export const AddNotebookScreen = ({navigation}: Props) => {
   const addNotebook = useAddNotebook();
 
-  const [notebookTitle, setNotebookTitle] = useState('');
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState(NotebookType.OTHER);
+  const [hasImages, setHasImages] = useState(true);
 
   const onSave = useCallback(() => {
-    addNotebook({title: notebookTitle, type: NotebookType.MOVIES});
+    addNotebook({title, type, hasImages});
     navigation.pop();
-  }, [addNotebook, notebookTitle, navigation]);
+  }, [addNotebook, title, type, hasImages, navigation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -31,9 +33,30 @@ export const AddNotebookScreen = ({navigation}: Props) => {
   }, [navigation, onSave]);
 
   return (
-    <Box flex={1} backgroundColor="background" justifyContent="center" alignItems="center">
-      <Text>Add notebook</Text>
-      <TextInput placeholder="Title" onChangeText={setNotebookTitle} />
+    <Box flex={1} backgroundColor="background">
+      <ScrollView keyboardDismissMode="on-drag">
+        <Box flex={1}>
+          <Box flexDirection="column" padding="standard" backgroundColor="cardBackground">
+            <Text variant="body" fontWeight="bold">
+              Title
+            </Text>
+            <TextField placeholder="Movies" onChangeText={setTitle} value={title} />
+          </Box>
+          <Divider style="full" />
+          <Box
+            flexDirection="row"
+            padding="standard"
+            backgroundColor="cardBackground"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Text variant="body" fontWeight="bold">
+              Has images?
+            </Text>
+            <Switch value={hasImages} onValueChange={setHasImages} />
+          </Box>
+        </Box>
+      </ScrollView>
     </Box>
   );
 };

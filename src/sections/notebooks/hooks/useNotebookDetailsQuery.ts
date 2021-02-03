@@ -22,6 +22,7 @@ interface NotebookDetailsQueryRow {
   notebookType: NotebookType;
   notebookUpdatedAt: string;
   notebookCreatedAt: string;
+  notebookHasImages: number;
   ratingId: number;
   ratingTitle: string;
   ratingValue: number;
@@ -52,6 +53,7 @@ export const useNotebookDetailsQuery = ({
       Notebook.created_at as notebookCreatedAt,
       Notebook.updated_at as notebookUpdatedAt,
       Notebook.type_id as notebookType,
+      Notebook.has_images as notebookHasImages,
       Rating.id as ratingId,
       Rating.title as ratingTitle,
       Rating.value as ratingValue,
@@ -98,6 +100,7 @@ export const useNotebookDetailsQuery = ({
       updatedAt: new Date(data[0].notebookUpdatedAt),
       title: data[0].notebookTitle,
       type: data[0].notebookType,
+      hasImages: Boolean(data[0].notebookHasImages),
       ratings,
     };
   }, [data]);
@@ -114,10 +117,10 @@ export const useNotebookDetailsQuery = ({
 const buildOrderByClause = (sortOrder: SortOrder): string => {
   switch (sortOrder) {
     case SortOrder.ALPHABETICAL:
-      return 'ORDER BY ratingTitle, ratingUpdatedAt';
+      return 'ORDER BY ratingTitle, ratingUpdatedAt DESC';
     case SortOrder.RECENTLY_UPDATED:
-      return 'ORDER BY ratingUpdatedAt';
+      return 'ORDER BY ratingUpdatedAt DESC';
     case SortOrder.RATING:
-      return 'ORDER BY ratingValue, ratingTitle, ratingUpdatedAt';
+      return 'ORDER BY ratingValue, ratingTitle, ratingUpdatedAt DESC';
   }
 };

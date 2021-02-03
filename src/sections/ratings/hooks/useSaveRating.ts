@@ -63,7 +63,7 @@ export const useSaveRating = () => {
           return;
         }
 
-        const now = new Date().toISOString();
+        const now = new Date();
         try {
           // TODO: handle errors
           await db.executeSql(`
@@ -75,8 +75,8 @@ export const useSaveRating = () => {
                 ${imageUrl && typeof imageUrl === 'string' ? `"${imageUrl}"` : 'null'},
                 "${title}",
                 ${value},
-                "${now}",
-                "${date}"
+                "${now.toISOString()}",
+                "${date.toISOString()}"
               );
           `);
         } catch (err) {

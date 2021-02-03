@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {Pressable, StyleSheet} from 'react-native';
 import {Box, FastImage, Text} from 'shared/components';
 import {Rating} from 'shared/data/local/schema';
-import {formatPosterPath} from 'shared/util/formatMovie';
+import {formatRatingImageUrl} from 'shared/util/formatRating';
 
 interface Props {
   rating: Rating | 'placeholder';
@@ -36,11 +36,11 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
             alignItems="center"
             justifyContent="center"
           >
-            {rating !== 'placeholder' && rating.movieBasePosterPath && (
+            {rating !== 'placeholder' && rating.imageUrl && (
               <Box style={StyleSheet.absoluteFill}>
                 <FastImage
                   borderRadius="large"
-                  source={{uri: formatPosterPath(rating.movieBasePosterPath, 'w92')}}
+                  source={{uri: formatRatingImageUrl(rating.imageUrl, 'w92')}}
                   resizeMode="cover"
                   style={StyleSheet.absoluteFill}
                 />

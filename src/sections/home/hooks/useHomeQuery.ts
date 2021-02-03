@@ -20,6 +20,7 @@ interface HomeQueryRow {
   notebookType: NotebookType;
   notebookUpdatedAt: string;
   notebookCreatedAt: string;
+  notebookHasImages: number;
   ratingId: number;
   ratingTitle: string;
   ratingValue: number;
@@ -42,6 +43,7 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
       Notebook.created_at as notebookCreatedAt,
       Notebook.updated_at as notebookUpdatedAt,
       Notebook.type_id as notebookType,
+      Notebook.has_images as notebookHasImages,
       Rating.id as ratingId,
       Rating.title as ratingTitle,
       Rating.value as ratingValue,
@@ -75,6 +77,7 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
           updatedAt: new Date(row.notebookUpdatedAt),
           title: row.notebookTitle,
           type: row.notebookType,
+          hasImages: Boolean(row.notebookHasImages),
           ratings: [],
         });
       }

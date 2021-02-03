@@ -1,7 +1,8 @@
 import React, {useCallback, useState, useLayoutEffect, useEffect} from 'react';
+import {FlatList, ScrollView, StyleSheet} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {FlatList, ScrollView, StyleSheet} from 'react-native';
 import {Box, Divider, FastImage, HeaderButton, SearchBar, Text, TextField} from 'shared/components';
 import {useMovieSearch} from 'shared/data/tmdb/hooks/useMovieSearch';
 import {Movie} from 'shared/data/tmdb/schema';
@@ -107,10 +108,6 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
     });
   }, [navigation, onSave]);
 
-  const searchResultsContainer = searchResults ? (
-    <SearchResults results={searchResults} onResultPress={onResultPress} />
-  ) : null;
-
   const isCreatingRating = existingRating === undefined;
   const currentRating = `${ratingValue} / ${MAX_RATING_VALUE}`;
   const imageUrl = movie?.basePosterPath ? {basePosterPath: movie.basePosterPath} : undefined;
@@ -122,9 +119,9 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
       </Box>
       <Box flex={1}>
         <Box visible={isCreatingRating} zIndex={1}>
-          {searchResultsContainer}
+          {searchResults && <SearchResults results={searchResults} onResultPress={onResultPress} />}
         </Box>
-        <ScrollView style={styles.scrollView}>
+        <ScrollView style={styles.scrollView} keyboardDismissMode="on-drag">
           <Box flex={1}>
             {imageUrl && (
               <FastImage
@@ -145,7 +142,6 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
                 editable={isCreatingRating}
               />
             </Box>
-
             <Divider style="full" />
             <Box padding="standard" backgroundColor="cardBackground" justifyContent="center">
               <Box flexDirection="row" justifyContent="space-between" alignItems="baseline">
@@ -157,6 +153,15 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
               <Box marginTop="standard">
                 <RatingBar maximumRating={MAX_RATING_VALUE} value={ratingValue} onChangeRating={setRatingValue} />
               </Box>
+            </Box>
+            <Divider style="full" />
+            <Box backgroundColor="cardBackground" padding="standard">
+              <DateTimePicker
+                value={ratingDate}
+                mode="date"
+                display="inline"
+                onChange={(_, date) => setRatingDate(date ?? ratingDate)}
+              />
             </Box>
             <Divider style="full" />
           </Box>

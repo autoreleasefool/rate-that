@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {Pressable, ScrollView, StyleSheet} from 'react-native';
+import {Pressable, ScrollView} from 'react-native';
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';

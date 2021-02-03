@@ -21,6 +21,7 @@ export async function createTables(tx: Transaction) {
       type_id INTEGER,
       created_at TEXT,
       updated_at TEXT,
+      has_images INTEGER,
       FOREIGN KEY (type_id) REFERENCES NotebookType(id)
     );
   `);
