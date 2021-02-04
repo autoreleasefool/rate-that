@@ -7,8 +7,8 @@ interface DataRow {
 // MARK: Notebook
 
 export enum NotebookType {
-  MOVIES,
-  OTHER,
+  OTHER = 'OTHER',
+  MOVIES = 'MOVIES',
 }
 
 export interface Notebook extends DataRow {
