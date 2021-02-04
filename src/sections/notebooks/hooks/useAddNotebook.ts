@@ -23,8 +23,8 @@ export const useAddNotebook = () => {
         try {
           // TODO: handle errors
           await db.executeSql(`
-            INSERT INTO Notebook (title, type_id, created_at, updated_at, has_images) VALUES
-              ("${title}", ${type}, "${now.toISOString()}", "${now.toISOString()}", ${hasImages ? 1 : 0});
+            INSERT INTO Notebook (title, type, created_at, updated_at, has_images) VALUES
+              ("${title}", "${type}", "${now.toISOString()}", "${now.toISOString()}", ${hasImages ? 1 : 0});
           `);
         } catch (err) {
           console.error(err);

@@ -18,11 +18,10 @@ export async function createTables(tx: Transaction) {
     CREATE TABLE IF NOT EXISTS Notebook(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT,
-      type_id INTEGER,
+      type TEXT,
       created_at TEXT,
       updated_at TEXT,
-      has_images INTEGER,
-      FOREIGN KEY (type_id) REFERENCES NotebookType(id)
+      has_images INTEGER
     );
   `);
 

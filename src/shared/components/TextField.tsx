@@ -14,7 +14,6 @@ export const TextField = ({style, ...textInputProps}: TextInputProps) => {
         {
           fontSize: theme.textVariants.body.fontSize,
           color: theme.colors[theme.textVariants.body.color as keyof Theme['colors']],
-          marginTop: theme.spacing.small,
         },
         style,
       ]}

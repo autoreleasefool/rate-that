@@ -42,7 +42,7 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
       Notebook.title as notebookTitle,
       Notebook.created_at as notebookCreatedAt,
       Notebook.updated_at as notebookUpdatedAt,
-      Notebook.type_id as notebookType,
+      Notebook.type as notebookType,
       Notebook.has_images as notebookHasImages,
       Rating.id as ratingId,
       Rating.title as ratingTitle,

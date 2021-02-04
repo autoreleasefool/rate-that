@@ -5,6 +5,7 @@ export {HeaderButton} from './HeaderButton';
 export {Icon, IconName, IconSize} from './Icon';
 export {IconButton} from './IconButton';
 export {FastImage} from './FastImage';
+export {Form, FormElement} from './Form';
 export {SearchBar} from './SearchBar';
 export {Text} from './Text';
 export {TextField} from './TextField';

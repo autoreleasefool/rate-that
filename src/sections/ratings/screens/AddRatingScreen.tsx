@@ -3,7 +3,7 @@ import {FlatList, ScrollView, StyleSheet} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Box, Divider, FastImage, HeaderButton, SearchBar, Text, TextField} from 'shared/components';
+import {Box, Divider, FastImage, Form, FormElement, HeaderButton, SearchBar, Text, TextField} from 'shared/components';
 import {useMovieSearch} from 'shared/data/tmdb/hooks/useMovieSearch';
 import {Movie} from 'shared/data/tmdb/schema';
 import {formatTitle} from 'shared/util/formatMovie';
@@ -109,7 +109,6 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
   }, [navigation, onSave]);
 
   const isCreatingRating = existingRating === undefined;
-  const currentRating = `${ratingValue} / ${MAX_RATING_VALUE}`;
   const imageUrl = movie?.basePosterPath ? {basePosterPath: movie.basePosterPath} : undefined;
 
   return (
@@ -121,8 +120,8 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
         <Box visible={isCreatingRating} zIndex={1}>
           {searchResults && <SearchResults results={searchResults} onResultPress={onResultPress} />}
         </Box>
-        <ScrollView style={styles.scrollView} keyboardDismissMode="on-drag">
-          <Box flex={1}>
+        <Box zIndex={0}>
+          <Form>
             {imageUrl && (
               <FastImage
                 source={{uri: formatRatingImageUrl(imageUrl, 'w780')}}
@@ -131,48 +130,28 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
                 resizeMode="cover"
               />
             )}
-            <Box flexDirection="column" padding="standard" backgroundColor="cardBackground">
-              <Text variant="body" fontWeight="bold">
-                Title
-              </Text>
+            <FormElement title="Title" style="stacked">
               <TextField
                 placeholder="Avengers: Endgame (2019)"
                 onChangeText={onChangeTitle}
                 value={movie ? movie.title : ratingTitle}
                 editable={isCreatingRating}
               />
-            </Box>
-            <Divider style="full" />
-            <Box padding="standard" backgroundColor="cardBackground" justifyContent="center">
-              <Box flexDirection="row" justifyContent="space-between" alignItems="baseline">
-                <Text variant="body" fontWeight="bold">
-                  Rating
-                </Text>
-                <Text variant="caption">{currentRating}</Text>
-              </Box>
-              <Box marginTop="standard">
-                <RatingBar maximumRating={MAX_RATING_VALUE} value={ratingValue} onChangeRating={setRatingValue} />
-              </Box>
-            </Box>
-            <Divider style="full" />
-            <Box backgroundColor="cardBackground" padding="standard">
+            </FormElement>
+            <FormElement title="Rating" style="stacked">
+              <RatingBar maximumRating={MAX_RATING_VALUE} value={ratingValue} onChangeRating={setRatingValue} />
+            </FormElement>
+            <FormElement style="stacked">
               <DateTimePicker
                 value={ratingDate}
                 mode="date"
                 display="inline"
                 onChange={(_, date) => setRatingDate(date ?? ratingDate)}
               />
-            </Box>
-            <Divider style="full" />
-          </Box>
-        </ScrollView>
+            </FormElement>
+          </Form>
+        </Box>
       </Box>
     </Box>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollView: {
-    zIndex: 0,
-  },
-});
