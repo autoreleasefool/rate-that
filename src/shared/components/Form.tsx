@@ -26,20 +26,18 @@ export const Form = ({children}: FormProps) => {
 
 interface FormElementProps {
   children: React.ReactNode;
-  style?: 'stacked' | 'inline';
+  inline?: boolean;
   title?: string;
   caption?: string;
 }
 
-export const FormElement = ({children, style = 'stacked', title, caption}: FormElementProps) => {
-  const isInline = style === 'inline';
-
+export const FormElement = ({children, inline, title, caption}: FormElementProps) => {
   return (
     <Box
-      flexDirection={isInline ? 'row' : 'column'}
+      flexDirection={inline ? 'row' : 'column'}
       padding="standard"
-      justifyContent={isInline ? 'space-between' : undefined}
-      alignItems={isInline ? 'center' : undefined}
+      justifyContent={inline ? 'space-between' : undefined}
+      alignItems={inline ? 'center' : undefined}
       backgroundColor="cardBackground"
     >
       <Box flexDirection="column">
@@ -47,7 +45,7 @@ export const FormElement = ({children, style = 'stacked', title, caption}: FormE
           <Text
             variant="body"
             fontWeight="bold"
-            marginBottom={caption === undefined && !isInline ? 'standard' : undefined}
+            marginBottom={caption === undefined && !inline ? 'standard' : undefined}
           >
             {title}
           </Text>
@@ -55,9 +53,9 @@ export const FormElement = ({children, style = 'stacked', title, caption}: FormE
         {caption && (
           <Text
             variant="caption"
-            marginLeft={isInline ? 'standard' : undefined}
-            marginTop={isInline ? undefined : 'small'}
-            marginBottom={isInline ? undefined : 'standard'}
+            marginLeft={inline ? 'standard' : undefined}
+            marginTop={inline ? undefined : 'small'}
+            marginBottom={inline ? undefined : 'standard'}
           >
             {caption}
           </Text>

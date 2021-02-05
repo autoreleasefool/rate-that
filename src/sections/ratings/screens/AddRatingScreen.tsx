@@ -130,7 +130,7 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
                 resizeMode="cover"
               />
             )}
-            <FormElement title="Title" style="stacked">
+            <FormElement title="Title">
               <TextField
                 placeholder="Avengers: Endgame (2019)"
                 onChangeText={onChangeTitle}
@@ -138,10 +138,10 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
                 editable={isCreatingRating}
               />
             </FormElement>
-            <FormElement title="Rating" style="stacked">
+            <FormElement title="Rating">
               <RatingBar maximumRating={MAX_RATING_VALUE} value={ratingValue} onChangeRating={setRatingValue} />
             </FormElement>
-            <FormElement style="stacked">
+            <FormElement>
               <DateTimePicker
                 value={ratingDate}
                 mode="date"

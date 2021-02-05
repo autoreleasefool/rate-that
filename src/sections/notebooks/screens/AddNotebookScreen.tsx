@@ -37,13 +37,12 @@ export const AddNotebookScreen = ({navigation}: Props) => {
   return (
     <Box flex={1} backgroundColor="background">
       <Form>
-        <FormElement title="Title" style="stacked">
+        <FormElement title="Title">
           <TextField placeholder="Movies" onChangeText={setTitle} value={title} />
         </FormElement>
         <FormElement
           title="Category"
           caption="Describes what the notebook will contain. Certain categories offer search functionality"
-          style="stacked"
         >
           <Picker onValueChange={setType as (arg0: React.ReactText) => void} selectedValue={type}>
             {Object.keys(NotebookType)
@@ -53,7 +52,7 @@ export const AddNotebookScreen = ({navigation}: Props) => {
               ))}
           </Picker>
         </FormElement>
-        <FormElement title="Include images?" style="inline">
+        <FormElement title="Include images?" inline>
           <Switch value={hasImages} onValueChange={setHasImages} />
         </FormElement>
       </Form>
