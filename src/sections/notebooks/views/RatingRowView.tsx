@@ -4,7 +4,7 @@ import {format as formatDate, isSameYear} from 'date-fns';
 import {RatingBar} from 'sections/ratings/views/RatingBar';
 import {Box, FastImage, Icon, Text} from 'shared/components';
 import {Rating} from 'shared/data/local/schema';
-import {formatRatingImageUrl} from 'shared/util/formatRating';
+import {formatRatingImageUrl} from 'shared/data/local/util/ratingUtil';
 
 interface Props {
   rating: Rating;

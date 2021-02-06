@@ -1,6 +1,7 @@
 import {useMemo} from 'react';
 import {Notebook, NotebookType} from 'shared/data/local/schema';
 import {useBaseQuery, BaseQueryResult} from 'shared/data/local/hooks/useBaseQuery';
+import {buildRatingImageUrl} from 'shared/data/local/util/ratingUtil';
 
 enum SortOrder {
   ALPHABETICAL,
@@ -26,9 +27,9 @@ interface HomeQueryRow {
   ratingValue: number;
   ratingUpdatedAt: string;
   ratingCreatedAt: string;
-  ratingMovieId?: number;
-  ratingMoviePosterPath?: string;
-  ratingImageUrl?: string;
+  ratingMovieId: number;
+  ratingMoviePosterPath: string;
+  ratingImageUrl: string;
 }
 
 export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResults => {
@@ -90,11 +91,7 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
           title: row.ratingTitle,
           value: row.ratingValue,
           movieId: row.ratingMovieId,
-          imageUrl: row.ratingImageUrl
-            ? row.ratingImageUrl
-            : row.ratingMoviePosterPath
-            ? {basePosterPath: row.ratingMoviePosterPath}
-            : undefined,
+          ...buildRatingImageUrl(row),
         });
       }
     }

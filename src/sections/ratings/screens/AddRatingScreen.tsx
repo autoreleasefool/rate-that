@@ -1,22 +1,22 @@
 import React, {useCallback, useState, useLayoutEffect, useEffect} from 'react';
-import {FlatList, ScrollView, StyleSheet} from 'react-native';
+import {FlatList} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Box, Divider, FastImage, Form, FormElement, HeaderButton, SearchBar, Text, TextField} from 'shared/components';
+import {Box, Divider, FastImage, Form, FormElement, HeaderButton, SearchBar, TextField} from 'shared/components';
 import {useMovieSearch} from 'shared/data/tmdb/hooks/useMovieSearch';
 import {Movie} from 'shared/data/tmdb/schema';
-import {formatTitle} from 'shared/util/formatMovie';
+import {formatTitle} from 'shared/data/tmdb/util/movieUtil';
 import {useDebounce} from 'shared/util/useDebounce';
 import {MAX_RATING_VALUE} from 'shared/constants';
-import {RatingImage} from 'shared/data/local/schema';
-import {formatRatingImageUrl} from 'shared/util/formatRating';
+import {NotebookType, RatingImage} from 'shared/data/local/schema';
+import {formatRatingImageUrl} from 'shared/data/local/util/ratingUtil';
 
 import {useSaveRating} from '../hooks/useSaveRating';
 import {AddRatingStackParamList} from '../routes';
 import {MovieResultView} from '../views/MovieResultView';
 import {RatingBar} from '../views/RatingBar';
-import {useRatingDetailsQuery} from '../hooks/useRatingDetailsQuery';
+import {useAddRatingDetailsQuery} from '../hooks/useAddRatingDetailsQuery';
 
 interface SearchResultsProps {
   results: Movie[];
@@ -36,8 +36,9 @@ interface Props {
 
 export const AddRatingScreen = ({navigation, route}: Props) => {
   const saveRating = useSaveRating();
-  const {data: existingRating} = useRatingDetailsQuery({
-    id: 'ratingId' in route.params ? route.params.ratingId : undefined,
+  const {data} = useAddRatingDetailsQuery({
+    ratingId: 'ratingId' in route.params ? route.params.ratingId : undefined,
+    notebookId: 'notebookId' in route.params ? route.params.notebookId : undefined,
   });
 
   const [query, setQuery] = useState('');
@@ -51,20 +52,13 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
   const [movie, setMovie] = useState<Movie>();
 
   useEffect(() => {
-    if (existingRating && !didSetRatingProperties) {
+    if (data?.rating && !didSetRatingProperties) {
       setDidSetRatingProperties(true);
-      setRatingTitle(existingRating.title);
-      setRatingValue(existingRating.value);
-      setRatingDate(existingRating.updatedAt);
+      setRatingTitle(data.rating.title);
+      setRatingValue(data.rating.value);
+      setRatingDate(data.rating.updatedAt);
     }
-  }, [
-    existingRating,
-    setRatingTitle,
-    setRatingValue,
-    setRatingDate,
-    didSetRatingProperties,
-    setDidSetRatingProperties,
-  ]);
+  }, [data?.rating, setRatingTitle, setRatingValue, setRatingDate, didSetRatingProperties, setDidSetRatingProperties]);
 
   const onSave = useCallback(() => {
     const title = movie ? formatTitle(movie) : ratingTitle;
@@ -75,13 +69,13 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
       ? {basePosterPath: movie.basePosterPath}
       : undefined;
 
-    if (existingRating) {
-      saveRating({ratingId: existingRating.id, value, date});
+    if (data?.rating) {
+      saveRating({ratingId: data.rating.id, value, date});
     } else {
       saveRating({movieId: movie?.id, imageUrl, date, title, value, notebookId});
     }
     navigation.pop();
-  }, [existingRating, saveRating, ratingTitle, ratingValue, ratingDate, navigation, route.params, movie]);
+  }, [data?.rating, saveRating, ratingTitle, ratingValue, ratingDate, navigation, route.params, movie]);
 
   const onResultPress = useCallback(
     (newMovie: Movie) => {
@@ -108,12 +102,13 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
     });
   }, [navigation, onSave]);
 
-  const isCreatingRating = existingRating === undefined;
+  const isCreatingRating = !('ratingId' in route.params);
+  const showMovieSearch = data?.notebook.type === NotebookType.MOVIES;
   const imageUrl = movie?.basePosterPath ? {basePosterPath: movie.basePosterPath} : undefined;
 
   return (
     <Box flex={1} backgroundColor="background">
-      <Box visible={isCreatingRating}>
+      <Box visible={isCreatingRating && showMovieSearch}>
         <SearchBar query={query} placeholder={'Search'} onChange={setQuery} />
       </Box>
       <Box flex={1}>

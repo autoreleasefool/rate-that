@@ -2,7 +2,7 @@ import React from 'react';
 import {Pressable} from 'react-native';
 import {Box, FastImage, Text} from 'shared/components';
 import {Movie} from 'shared/data/tmdb/schema';
-import {formatOverview, formatPosterPath, formatTitle} from 'shared/util/formatMovie';
+import {formatOverview, formatPosterPath, formatTitle} from 'shared/data/tmdb/util/movieUtil';
 
 interface Props {
   movie: Movie;

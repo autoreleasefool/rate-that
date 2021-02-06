@@ -1,10 +1,10 @@
 import React, {useCallback, useState, useLayoutEffect} from 'react';
-import {ScrollView, Switch} from 'react-native';
+import {Switch} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Box, Divider, Form, FormElement, HeaderButton, Text, TextField} from 'shared/components';
+import {Box, Form, FormElement, HeaderButton, TextField} from 'shared/components';
 import {NotebookType} from 'shared/data/local/schema';
-import {formatType} from 'shared/util/formatNotebook';
+import {formatType} from 'shared/data/local/util/notebookUtil';
 
 import {useAddNotebook} from '../hooks/useAddNotebook';
 import {AddNotebookStackParamList} from '../routes';

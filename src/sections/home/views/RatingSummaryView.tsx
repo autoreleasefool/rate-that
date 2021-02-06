@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {Pressable, StyleSheet} from 'react-native';
 import {Box, FastImage, Text} from 'shared/components';
 import {Rating} from 'shared/data/local/schema';
-import {formatRatingImageUrl} from 'shared/util/formatRating';
+import {formatRatingImageUrl} from 'shared/data/local/util/ratingUtil';
 
 interface Props {
   rating: Rating | 'placeholder';
