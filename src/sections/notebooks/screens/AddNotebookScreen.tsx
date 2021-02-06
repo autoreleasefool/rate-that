@@ -22,6 +22,20 @@ export const AddNotebookScreen = ({navigation}: Props) => {
   const [type, setType] = useState(NotebookType.OTHER);
   const [hasImages, setHasImages] = useState(true);
 
+  const setNotebookTypeProperties = useCallback(
+    (newType: NotebookType) => {
+      setType(newType);
+      switch (newType) {
+        case NotebookType.MOVIES:
+          setHasImages(true);
+          break;
+        case NotebookType.OTHER:
+          break;
+      }
+    },
+    [setType, setHasImages],
+  );
+
   const onSave = useCallback(() => {
     addNotebook({title, type, hasImages});
     navigation.pop();
@@ -30,9 +44,16 @@ export const AddNotebookScreen = ({navigation}: Props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <HeaderButton onPress={() => navigation.pop()} title="Cancel" />,
-      headerRight: () => <HeaderButton onPress={onSave} title="Save" />,
     });
-  }, [navigation, onSave]);
+  }, [navigation]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <HeaderButton onPress={onSave} title="Save" disabled={title.length === 0} />,
+    });
+  }, [navigation, onSave, title]);
+
+  const hasImagesEnabled = type === NotebookType.OTHER;
 
   return (
     <Box flex={1} backgroundColor="background">
@@ -44,7 +65,7 @@ export const AddNotebookScreen = ({navigation}: Props) => {
           title="Category"
           caption="Describes what the notebook will contain. Certain categories offer search functionality"
         >
-          <Picker onValueChange={setType as (arg0: React.ReactText) => void} selectedValue={type}>
+          <Picker onValueChange={setNotebookTypeProperties as any} selectedValue={type}>
             {Object.keys(NotebookType)
               .filter(key => isNaN(Number(key)))
               .map(notebookType => (
@@ -53,7 +74,7 @@ export const AddNotebookScreen = ({navigation}: Props) => {
           </Picker>
         </FormElement>
         <FormElement title="Include images?" inline>
-          <Switch value={hasImages} onValueChange={setHasImages} />
+          <Switch value={hasImages} onValueChange={setHasImages} disabled={!hasImagesEnabled} />
         </FormElement>
       </Form>
     </Box>

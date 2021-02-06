@@ -1,5 +1,6 @@
 import React from 'react';
 import {Pressable} from 'react-native';
+import {Theme} from 'shared/theme';
 
 import {Box} from './Box';
 import {Icon, IconName} from './Icon';
@@ -9,13 +10,20 @@ interface HeaderButtonProps {
   title?: string;
   icon?: IconName;
   onPress: () => void;
+  disabled?: boolean;
 }
 
-export const HeaderButton = ({title, icon, onPress}: HeaderButtonProps) => {
+export const HeaderButton = ({title, icon, onPress, disabled}: HeaderButtonProps) => {
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={onPress} disabled={disabled}>
       {({pressed}) => {
-        const color = pressed ? 'textSecondary' : 'textPrimary';
+        let color: keyof Theme['colors'];
+        if (disabled) {
+          color = 'textSecondary';
+        } else {
+          color = pressed ? 'textSecondary' : 'textPrimary';
+        }
+
         return (
           <Box flexDirection="row">
             {title && (
