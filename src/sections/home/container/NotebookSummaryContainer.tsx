@@ -4,17 +4,19 @@ import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
 import {Box, Text} from 'shared/components';
-import {Notebook, Rating} from 'shared/data/local/schema';
+import {Notebook} from 'shared/data/local/schema';
 
 import {HomeStackParamList} from '../routes';
-import {RatingSummaryView} from '../views/RatingSummaryView';
+import {RatingSummaryView, RatingProps} from '../views/RatingSummaryView';
 
 type NavigationProp = CompositeNavigationProp<
   StackNavigationProp<HomeStackParamList, 'Index'>,
   StackNavigationProp<RootStackParamList>
 >;
 interface Props {
-  notebook: Notebook;
+  notebook: Pick<Notebook, 'id' | 'hasImages' | 'title' | 'type'> & {
+    ratings: RatingProps[];
+  };
   isFirstItem: boolean;
   isLastItem: boolean;
 }
@@ -32,9 +34,9 @@ export const NotebookSummaryContainer = ({notebook, isFirstItem, isLastItem}: Pr
   }, [navigation, notebook.id]);
 
   const onPressRating = useCallback(
-    (rating?: Rating) => {
-      if (rating) {
-        navigation.navigate('AddRating', {screen: 'Edit', params: {ratingId: rating.id}});
+    (ratingId?: number) => {
+      if (ratingId !== undefined) {
+        navigation.navigate('AddRating', {screen: 'Edit', params: {ratingId: ratingId}});
       } else {
         navigation.navigate('AddRating', {screen: 'Add', params: {notebookId: notebook.id}});
       }
@@ -60,7 +62,7 @@ export const NotebookSummaryContainer = ({notebook, isFirstItem, isLastItem}: Pr
               {notebook.title}
             </Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <RatingSummaryView onPress={onPressRating} rating="placeholder" />
+              <RatingSummaryView onPress={onPressRating} supportsImages={notebook.hasImages} placeholder />
               {notebook.ratings.slice(0, MAX_RATINGS_PREVIEW).map((rating, index) => (
                 <Box
                   key={rating.id}
@@ -68,7 +70,15 @@ export const NotebookSummaryContainer = ({notebook, isFirstItem, isLastItem}: Pr
                     index === MAX_RATINGS_PREVIEW - 1 || index === notebook.ratings.length - 1 ? 'standard' : undefined
                   }
                 >
-                  <RatingSummaryView key={rating.id} rating={rating} onPress={onPressRating} />
+                  <RatingSummaryView
+                    key={rating.id}
+                    id={rating.id}
+                    value={rating.value}
+                    title={rating.title}
+                    imageUrl={rating.imageUrl}
+                    onPress={onPressRating}
+                    supportsImages={notebook.hasImages}
+                  />
                 </Box>
               ))}
             </ScrollView>

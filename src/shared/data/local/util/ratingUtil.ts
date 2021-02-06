@@ -5,7 +5,7 @@ import {formatPosterPath} from 'shared/data/tmdb/util/movieUtil';
 export function buildRatingImageUrl(arg: {
   ratingMoviePosterPath: string | undefined;
   ratingImageUrl: string | undefined;
-}): Pick<Rating, 'imageUrl'> | undefined {
+}): Pick<Rating, 'imageUrl'> {
   if ('ratingImageUrl' in arg && arg.ratingImageUrl !== undefined && arg.ratingImageUrl !== null) {
     return {imageUrl: arg.ratingImageUrl};
   } else if (
@@ -16,7 +16,7 @@ export function buildRatingImageUrl(arg: {
     return {imageUrl: {basePosterPath: arg.ratingMoviePosterPath}};
   }
 
-  return undefined;
+  return {imageUrl: undefined};
 }
 
 export function formatRatingImageUrl(imageUrl: RatingImage, width: ImageWidth): string | undefined {

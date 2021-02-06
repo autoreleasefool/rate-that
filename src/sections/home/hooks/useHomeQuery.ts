@@ -1,5 +1,5 @@
 import {useMemo} from 'react';
-import {Notebook, NotebookType} from 'shared/data/local/schema';
+import {Notebook, NotebookType, Rating} from 'shared/data/local/schema';
 import {useBaseQuery, BaseQueryResult} from 'shared/data/local/hooks/useBaseQuery';
 import {buildRatingImageUrl} from 'shared/data/local/util/ratingUtil';
 
@@ -13,21 +13,21 @@ interface HomeQueryProps {
   sortOrder?: SortOrder;
 }
 
-interface HomeQueryResults extends BaseQueryResult<Notebook[]> {}
+type RatingFragment = Pick<Rating, 'id' | 'imageUrl' | 'title' | 'value'>;
 
+type NotebookFragment = Pick<Notebook, 'id' | 'hasImages' | 'title' | 'type'> & {
+  ratings: RatingFragment[];
+};
+
+type HomeQueryResults = BaseQueryResult<NotebookFragment[]>;
 interface HomeQueryRow {
   notebookId: number;
   notebookTitle: string;
   notebookType: NotebookType;
-  notebookUpdatedAt: string;
-  notebookCreatedAt: string;
   notebookHasImages: number;
   ratingId: number;
   ratingTitle: string;
   ratingValue: number;
-  ratingUpdatedAt: string;
-  ratingCreatedAt: string;
-  ratingMovieId: number;
   ratingMoviePosterPath: string;
   ratingImageUrl: string;
 }
@@ -41,16 +41,11 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
     SELECT
       Notebook.id as notebookId,
       Notebook.title as notebookTitle,
-      Notebook.created_at as notebookCreatedAt,
-      Notebook.updated_at as notebookUpdatedAt,
       Notebook.type as notebookType,
       Notebook.has_images as notebookHasImages,
       Rating.id as ratingId,
       Rating.title as ratingTitle,
       Rating.value as ratingValue,
-      Rating.updated_at as ratingUpdatedAt,
-      Rating.created_at as ratingCreatedAt,
-      Rating.movie_id as ratingMovieId,
       Rating.movie_poster_path as ratingMoviePosterPath,
       Rating.image_url as ratingImageUrl
     FROM
@@ -68,14 +63,12 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
     }
 
     let lastNotebookId: number | undefined;
-    const notebooks: Notebook[] = [];
+    const notebooks: NotebookFragment[] = [];
     for (const row of data) {
       if (row.notebookId !== lastNotebookId) {
         lastNotebookId = row.notebookId;
         notebooks.push({
           id: row.notebookId,
-          createdAt: new Date(row.notebookCreatedAt),
-          updatedAt: new Date(row.notebookUpdatedAt),
           title: row.notebookTitle,
           type: row.notebookType,
           hasImages: Boolean(row.notebookHasImages),
@@ -86,11 +79,8 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
       if (row.ratingId) {
         notebooks[notebooks.length - 1].ratings.push({
           id: row.ratingId,
-          createdAt: new Date(row.ratingCreatedAt),
-          updatedAt: new Date(row.ratingUpdatedAt),
           title: row.ratingTitle,
           value: row.ratingValue,
-          movieId: row.ratingMovieId,
           ...buildRatingImageUrl(row),
         });
       }
@@ -111,8 +101,8 @@ export const useHomeQuery = ({filter, sortOrder}: HomeQueryProps): HomeQueryResu
 const buildOrderByClause = (sortOrder: SortOrder): string => {
   switch (sortOrder) {
     case SortOrder.ALPHABETICAL:
-      return 'ORDER BY notebookTitle, notebookUpdatedAt DESC, ratingUpdatedAt DESC';
+      return 'ORDER BY Notebook.title, Notebook.updated_at DESC, Rating.updated_at DESC';
     case SortOrder.RECENTLY_UPDATED:
-      return 'ORDER BY notebookUpdatedAt DESC, ratingUpdatedAt DESC';
+      return 'ORDER BY Notebook.updated_at DESC, Rating.updated_at DESC';
   }
 };

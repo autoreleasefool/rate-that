@@ -6,25 +6,26 @@ import {Box, FastImage, Icon, Text} from 'shared/components';
 import {Rating} from 'shared/data/local/schema';
 import {formatRatingImageUrl} from 'shared/data/local/util/ratingUtil';
 
-interface Props {
-  rating: Rating;
+export type RatingFragment = Pick<Rating, 'updatedAt' | 'value' | 'imageUrl' | 'title'>;
+
+type Props = RatingFragment & {
   isFirstItem: boolean;
   isLastItem: boolean;
   onPress: () => void;
-}
+};
 
-export const RatingRowView = ({rating, isFirstItem, isLastItem, onPress}: Props) => {
+export const RatingRowView = ({updatedAt, value, imageUrl, title, isFirstItem, isLastItem, onPress}: Props) => {
   const topBorderRadius = isFirstItem ? 'large' : undefined;
   const bottomBorderRadius = isLastItem ? 'large' : undefined;
 
   let ratingUpdatedAt: string;
   const now = new Date();
-  if (isSameYear(now, rating.updatedAt)) {
-    ratingUpdatedAt = formatDate(rating.updatedAt, 'MMMM d');
+  if (isSameYear(now, updatedAt)) {
+    ratingUpdatedAt = formatDate(updatedAt, 'MMMM d');
   } else {
-    ratingUpdatedAt = formatDate(rating.updatedAt, 'MMMM d, yyyy');
+    ratingUpdatedAt = formatDate(updatedAt, 'MMMM d, yyyy');
   }
-  const currentRating = `${rating.value} / 10`;
+  const currentRating = `${value} / 10`;
 
   return (
     <Pressable onPress={onPress}>
@@ -38,9 +39,9 @@ export const RatingRowView = ({rating, isFirstItem, isLastItem, onPress}: Props)
           borderBottomLeftRadius={bottomBorderRadius}
           borderBottomRightRadius={bottomBorderRadius}
         >
-          {rating.imageUrl ? (
+          {imageUrl ? (
             <FastImage
-              source={{uri: formatRatingImageUrl(rating.imageUrl, 'w185')}}
+              source={{uri: formatRatingImageUrl(imageUrl, 'w185')}}
               width={80}
               height={120}
               borderTopLeftRadius={topBorderRadius}
@@ -61,7 +62,7 @@ export const RatingRowView = ({rating, isFirstItem, isLastItem, onPress}: Props)
           )}
           <Box flexDirection="column" margin="small">
             <Text variant="body" fontWeight="bold">
-              {rating.title}
+              {title}
             </Text>
             <Text variant="captionSecondary" marginTop="small">
               Rated on {ratingUpdatedAt}
@@ -70,7 +71,7 @@ export const RatingRowView = ({rating, isFirstItem, isLastItem, onPress}: Props)
             <Text variant="caption" marginBottom="small">
               {currentRating}
             </Text>
-            <RatingBar value={rating.value} size="small" disabled />
+            <RatingBar value={value} size="small" disabled />
           </Box>
         </Box>
       )}

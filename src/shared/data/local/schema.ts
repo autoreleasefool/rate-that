@@ -25,6 +25,7 @@ export type RatingImage = string | {basePosterPath: string};
 export interface Rating extends DataRow {
   title: string;
   value: number;
-  movieId?: number;
-  imageUrl?: RatingImage;
+  movieId: number | undefined;
+  imageUrl: RatingImage | undefined;
+  notes: string | undefined;
 }

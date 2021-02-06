@@ -4,22 +4,39 @@ import {Box, FastImage, Text} from 'shared/components';
 import {Rating} from 'shared/data/local/schema';
 import {formatRatingImageUrl} from 'shared/data/local/util/ratingUtil';
 
-interface Props {
-  rating: Rating | 'placeholder';
-  onPress: (rating?: Rating) => void;
+export type RatingProps = Pick<Rating, 'id' | 'imageUrl' | 'title' | 'value'>;
+interface PlaceholderProps {
+  placeholder: true;
 }
 
-export const RatingSummaryView = ({rating, onPress}: Props) => {
-  const commonOnPress = useCallback(() => {
-    if (rating === 'placeholder') {
-      onPress();
-    } else {
-      onPress(rating);
-    }
-  }, [rating, onPress]);
+type Props = (PlaceholderProps | RatingProps) & {
+  supportsImages: boolean;
+  onPress: (ratingId?: number) => void;
+};
 
+export const RatingSummaryView = (props: Props) => {
+  const commonOnPress = useCallback(() => {
+    if (isPlaceholderProps(props)) {
+      props.onPress();
+    } else {
+      props.onPress(props.id);
+    }
+  }, [props]);
+
+  return props.supportsImages ? (
+    <RatingSummaryWithImage {...props} onPress={commonOnPress} />
+  ) : (
+    <RatingSummaryWithoutImage {...props} onPress={commonOnPress} />
+  );
+};
+
+type InnerProps = (PlaceholderProps | RatingProps) & {
+  onPress: () => void;
+};
+
+const RatingSummaryWithImage = (props: InnerProps) => {
   return (
-    <Pressable onPress={commonOnPress}>
+    <Pressable onPress={props.onPress}>
       {({pressed}) => {
         return (
           <Box
@@ -36,11 +53,11 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
             alignItems="center"
             justifyContent="center"
           >
-            {rating !== 'placeholder' && rating.imageUrl && (
+            {!isPlaceholderProps(props) && props.imageUrl && (
               <Box style={StyleSheet.absoluteFill}>
                 <FastImage
                   borderRadius="large"
-                  source={{uri: formatRatingImageUrl(rating.imageUrl, 'w92')}}
+                  source={{uri: formatRatingImageUrl(props.imageUrl, 'w154')}}
                   resizeMode="cover"
                   style={StyleSheet.absoluteFill}
                 />
@@ -52,8 +69,10 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
                 />
               </Box>
             )}
-            {rating === 'placeholder' ? (
-              <Text variant="header">+</Text>
+            {isPlaceholderProps(props) ? (
+              <Text variant="header" color="white">
+                +
+              </Text>
             ) : (
               <Box
                 backgroundColor="blackTransparent"
@@ -65,7 +84,7 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
                 overflow="hidden"
               >
                 <Text variant="header" color="white" paddingHorizontal="small" paddingVertical="extraSmall">
-                  {rating.value}
+                  {props.value}
                 </Text>
               </Box>
             )}
@@ -75,3 +94,11 @@ export const RatingSummaryView = ({rating, onPress}: Props) => {
     </Pressable>
   );
 };
+
+const RatingSummaryWithoutImage = (props: InnerProps) => {
+  return <Box />;
+};
+
+function isPlaceholderProps(props: PlaceholderProps | RatingProps): props is PlaceholderProps {
+  return 'placeholder' in props;
+}

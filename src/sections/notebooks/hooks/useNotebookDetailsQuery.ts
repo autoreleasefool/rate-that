@@ -14,7 +14,13 @@ interface NotebookDetailsQueryProps {
   sortOrder?: SortOrder;
 }
 
-interface NotebookDetailsQueryResults extends BaseQueryResult<Notebook> {}
+type RatingFragment = Pick<Rating, 'id' | 'imageUrl' | 'title' | 'value' | 'notes' | 'updatedAt'>;
+
+type NotebookFragment = Pick<Notebook, 'id' | 'updatedAt' | 'createdAt' | 'hasImages' | 'title' | 'type'> & {
+  ratings: RatingFragment[];
+};
+
+type NotebookDetailsQueryResults = BaseQueryResult<NotebookFragment>;
 
 interface NotebookDetailsQueryRow {
   notebookId: number;
@@ -27,10 +33,9 @@ interface NotebookDetailsQueryRow {
   ratingTitle: string;
   ratingValue: number;
   ratingUpdatedAt: string;
-  ratingCreatedAt: string;
-  ratingMovieId?: number;
-  ratingMoviePosterPath?: string;
-  ratingImageUrl?: string;
+  ratingMoviePosterPath: string | undefined;
+  ratingImageUrl: string | undefined;
+  ratingNotes: string | undefined;
 }
 
 export const useNotebookDetailsQuery = ({
@@ -58,10 +63,9 @@ export const useNotebookDetailsQuery = ({
       Rating.title as ratingTitle,
       Rating.value as ratingValue,
       Rating.updated_at as ratingUpdatedAt,
-      Rating.created_at as ratingCreatedAt,
-      Rating.movie_id as ratingMovieId,
       Rating.movie_poster_path as ratingMoviePosterPath,
-      Rating.image_url as ratingImageUrl
+      Rating.image_url as ratingImageUrl,
+      Rating.notes as ratingNotes
     FROM
       Notebook
     LEFT JOIN
@@ -71,7 +75,7 @@ export const useNotebookDetailsQuery = ({
     `,
   });
 
-  const notebook = useMemo((): Notebook | undefined => {
+  const notebook = useMemo((): NotebookFragment | undefined => {
     if (!data) {
       return;
     }
@@ -79,13 +83,12 @@ export const useNotebookDetailsQuery = ({
     const ratings = data
       .filter(row => row.ratingId)
       .map(
-        (row): Rating => ({
+        (row): RatingFragment => ({
           id: row.ratingId,
-          createdAt: new Date(row.ratingCreatedAt),
-          updatedAt: new Date(row.ratingUpdatedAt),
           value: row.ratingValue,
           title: row.ratingTitle,
-          movieId: row.ratingMovieId,
+          notes: row.ratingNotes,
+          updatedAt: new Date(row.ratingUpdatedAt),
           imageUrl: row.ratingImageUrl
             ? row.ratingImageUrl
             : row.ratingMoviePosterPath
@@ -117,10 +120,10 @@ export const useNotebookDetailsQuery = ({
 const buildOrderByClause = (sortOrder: SortOrder): string => {
   switch (sortOrder) {
     case SortOrder.ALPHABETICAL:
-      return 'ORDER BY ratingTitle, ratingUpdatedAt DESC';
+      return 'ORDER BY Rating.title, Rating.updated_at DESC';
     case SortOrder.RECENTLY_UPDATED:
-      return 'ORDER BY ratingUpdatedAt DESC';
+      return 'ORDER BY Rating.updated_at DESC';
     case SortOrder.RATING:
-      return 'ORDER BY ratingValue, ratingTitle, ratingUpdatedAt DESC';
+      return 'ORDER BY Rating.value, Rating.title, Rating.updated_at DESC';
   }
 };
