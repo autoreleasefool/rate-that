@@ -98,9 +98,14 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <HeaderButton onPress={() => navigation.pop()} title="Cancel" />,
-      headerRight: () => <HeaderButton onPress={onSave} title="Save" />,
     });
-  }, [navigation, onSave]);
+  }, [navigation]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <HeaderButton onPress={onSave} title="Save" disabled={ratingTitle.length === 0} />,
+    });
+  });
 
   const isCreatingRating = !('ratingId' in route.params);
   const showMovieSearch = data?.notebook.type === NotebookType.MOVIES;
