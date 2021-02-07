@@ -42,7 +42,6 @@ export const useEventBusProducer = <T extends EventId>({eventId}: ProducerProps<
   const eventBus = useContext(EventBusContext);
   return useCallback(
     (payload: EventPayload[T]) => {
-      console.log(eventBus.getObservers(eventId));
       eventBus.getObservers(eventId).forEach(observer => {
         observer(payload);
       });

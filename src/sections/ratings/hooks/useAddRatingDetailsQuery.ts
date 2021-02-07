@@ -84,7 +84,7 @@ export const useAddRatingDetailsQuery = ({
   const isNotebookQuery = notebookId !== undefined;
 
   const results = useMemo((): Fragment | undefined => {
-    if (notebookId && notebookData) {
+    if (notebookId && notebookData && notebookData.length > 0) {
       return {
         notebook: {
           id: notebookData[0].notebookId,

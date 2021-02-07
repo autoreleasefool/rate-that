@@ -86,6 +86,7 @@ export const SearchBar = ({query, placeholder, onChange}: Props) => {
             onChangeText={onChange}
             onBlur={() => onBlur()}
             onFocus={onFocus}
+            autoCapitalize="none"
             style={{fontSize: theme.textVariants.body.fontSize, color: theme.colors.textPrimary}}
           />
         </Box>

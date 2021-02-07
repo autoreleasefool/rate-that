@@ -1,15 +1,16 @@
-import React, {useCallback, useLayoutEffect} from 'react';
+import React, {useCallback, useLayoutEffect, useState} from 'react';
 import {Alert, FlatList, RefreshControl} from 'react-native';
 import {CompositeNavigationProp, RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
 import {HomeStackParamList} from 'sections/home/routes';
-import {Box, Divider, EmptyStateView, HeaderButton} from 'shared/components';
+import {Box, Divider, EmptyStateView, HeaderButton, SearchBar} from 'shared/components';
 import {useEventBusConsumer} from 'shared/util/EventBus';
+import {useDebounce} from 'shared/util/useDebounce';
+import {ListButton} from 'shared/components/ListButton';
 
 import {useNotebookDetailsQuery} from '../hooks/useNotebookDetailsQuery';
 import {RatingSummaryContainer} from '../container/RatingSummaryContainer';
-import {ListButton} from 'shared/components/ListButton';
 import {useDeleteNotebook} from '../hooks/useDeleteNotebook';
 
 type NavigationProp = CompositeNavigationProp<
@@ -23,7 +24,10 @@ interface Props {
 }
 
 export const NotebookDetailsScreen = ({navigation, route}: Props) => {
-  const {data, isRefreshing, refresh} = useNotebookDetailsQuery({id: route.params.notebookId});
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce({value: query, delay: 400});
+
+  const {data, isRefreshing, refresh} = useNotebookDetailsQuery({id: route.params.notebookId, filter: debouncedQuery});
 
   useEventBusConsumer({eventIds: ['AddRating', 'EditRating'], observer: refresh});
 
@@ -55,27 +59,35 @@ export const NotebookDetailsScreen = ({navigation, route}: Props) => {
   }, [navigation, deleteNotebook, route.params.notebookId, data?.title]);
 
   return (
-    <Box flex={1} backgroundColor="background" paddingHorizontal="standard">
-      <FlatList
-        data={data?.ratings ?? []}
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
-        renderItem={({item, index}) => (
-          <RatingSummaryContainer
-            rating={item}
-            isFirstItem={index === 0}
-            isLastItem={index + 1 === data?.ratings.length}
-          />
-        )}
-        ItemSeparatorComponent={Divider}
-        ListEmptyComponent={<EmptyStateView title="No ratings" />}
-        ListFooterComponent={
-          <Box marginTop="standard">
-            <ListButton onPress={onDelete} destructive>
-              Delete notebook
-            </ListButton>
-          </Box>
-        }
-      />
+    <Box flex={1} backgroundColor="background">
+      <SearchBar query={query} placeholder={'Search'} onChange={setQuery} />
+      <Box paddingHorizontal="standard" flex={1}>
+        <FlatList
+          data={data?.ratings ?? []}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
+          renderItem={({item, index}) => (
+            <RatingSummaryContainer
+              rating={item}
+              isFirstItem={index === 0}
+              isLastItem={index + 1 === data?.ratings.length}
+            />
+          )}
+          ItemSeparatorComponent={Divider}
+          ListEmptyComponent={
+            <EmptyStateView
+              title={debouncedQuery.length === 0 ? 'No ratings' : `No ratings for "${debouncedQuery}"`}
+              subtitle={debouncedQuery.length === 0 ? undefined : 'Try another search, or clear the current search'}
+            />
+          }
+          ListFooterComponent={
+            <Box marginTop="standard">
+              <ListButton onPress={onDelete} destructive>
+                Delete notebook
+              </ListButton>
+            </Box>
+          }
+        />
+      </Box>
     </Box>
   );
 };

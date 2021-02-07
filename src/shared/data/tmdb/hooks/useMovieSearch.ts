@@ -5,11 +5,6 @@ import {Movie} from '../schema';
 
 interface MovieSearchParams {
   query: string;
-  // limit: number;
-  // pagination?: {
-  //   limit: number;
-  //   offset: number;
-  // };
 }
 
 interface MovieSearchResult {

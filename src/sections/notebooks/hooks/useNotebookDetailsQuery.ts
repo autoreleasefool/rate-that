@@ -45,7 +45,7 @@ export const useNotebookDetailsQuery = ({
 }: NotebookDetailsQueryProps): NotebookDetailsQueryResults => {
   let whereClause = `WHERE Notebook.id == ${id}`;
   if (filter) {
-    whereClause += `AND Rating.title LIKE %${filter}%`;
+    whereClause += ` AND Rating.title LIKE "%${filter}%"`;
   }
 
   const orderByClause = buildOrderByClause(sortOrder ?? SortOrder.RECENTLY_UPDATED);
@@ -76,8 +76,8 @@ export const useNotebookDetailsQuery = ({
   });
 
   const notebook = useMemo((): NotebookFragment | undefined => {
-    if (!data) {
-      return;
+    if (!data || data.length === 0) {
+      return undefined;
     }
 
     const ratings = data
