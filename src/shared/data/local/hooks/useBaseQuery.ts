@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {useDatabase} from './useDatabase';
 
 export interface BaseQueryResult<T> {
@@ -21,6 +21,14 @@ export const useBaseQuery = <T>({query, skip}: BaseQueryProps): BaseQueryResult<
   const [data, setData] = useState<T[]>();
   const [error, setError] = useState<Error>();
   const db = useDatabase();
+
+  const queryRef = useRef<string>();
+  useEffect(() => {
+    if (queryRef.current !== query) {
+      queryRef.current = query;
+      setDidPerformQuery(false);
+    }
+  }, [setDidPerformQuery, query]);
 
   const postError = useCallback(
     (err: Error) => {

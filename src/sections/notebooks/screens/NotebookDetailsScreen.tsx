@@ -4,7 +4,7 @@ import {CompositeNavigationProp, RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
 import {HomeStackParamList} from 'sections/home/routes';
-import {Box, Divider, EmptyStateView, HeaderButton, SearchBar} from 'shared/components';
+import {Box, Divider, EmptyStateView, HeaderButton, SearchBar, Text} from 'shared/components';
 import {useEventBusConsumer} from 'shared/util/EventBus';
 import {useDebounce} from 'shared/util/useDebounce';
 import {ListButton} from 'shared/components/ListButton';
@@ -79,15 +79,49 @@ export const NotebookDetailsScreen = ({navigation, route}: Props) => {
               subtitle={debouncedQuery.length === 0 ? undefined : 'Try another search, or clear the current search'}
             />
           }
-          ListFooterComponent={
-            <Box marginTop="standard">
-              <ListButton onPress={onDelete} destructive>
-                Delete notebook
-              </ListButton>
-            </Box>
-          }
+          ListHeaderComponent={<ListHeader totalRatings={24} averageRating={1.4} />}
+          ListFooterComponent={<ListFooter onDelete={onDelete} />}
         />
       </Box>
+    </Box>
+  );
+};
+
+interface ListHeaderProps {
+  totalRatings: number;
+  averageRating: number;
+}
+
+const ListHeader = ({totalRatings, averageRating}: ListHeaderProps) => {
+  return (
+    <Box backgroundColor="cardBackground" borderRadius="large" marginTop="standard">
+      <Box paddingVertical="small" paddingHorizontal="standard" flexDirection="row" justifyContent="space-between">
+        <Text variant="body" fontWeight="bold">
+          Total ratings
+        </Text>
+        <Text variant="body">24</Text>
+      </Box>
+      <Divider />
+      <Box paddingVertical="small" paddingHorizontal="standard" flexDirection="row" justifyContent="space-between">
+        <Text variant="body" fontWeight="bold">
+          Average rating
+        </Text>
+        <Text variant="body">7.2</Text>
+      </Box>
+    </Box>
+  );
+};
+
+interface ListFooterProps {
+  onDelete: () => void;
+}
+
+const ListFooter = ({onDelete}: ListFooterProps) => {
+  return (
+    <Box marginVertical="standard">
+      <ListButton onPress={onDelete} destructive>
+        Delete notebook
+      </ListButton>
     </Box>
   );
 };
