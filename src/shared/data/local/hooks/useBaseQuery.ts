@@ -15,6 +15,7 @@ interface BaseQueryProps {
 }
 
 export const useBaseQuery = <T>({query, skip}: BaseQueryProps): BaseQueryResult<T[]> => {
+  const [didPerformQuery, setDidPerformQuery] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<T[]>();
@@ -33,10 +34,11 @@ export const useBaseQuery = <T>({query, skip}: BaseQueryProps): BaseQueryResult<
     setIsRefreshing(true);
     setIsLoading(true);
     setError(undefined);
-  }, [setIsRefreshing, setIsLoading, setError]);
+    setDidPerformQuery(false);
+  }, [setIsRefreshing, setIsLoading, setError, setDidPerformQuery]);
 
   useEffect(() => {
-    if (!db || skip) {
+    if (!db || didPerformQuery || skip) {
       return;
     }
 
@@ -48,13 +50,24 @@ export const useBaseQuery = <T>({query, skip}: BaseQueryProps): BaseQueryResult<
       } catch (err) {
         postError(err);
       }
-
       setIsLoading(false);
       setIsRefreshing(false);
     };
 
+    setDidPerformQuery(true);
     performFetch();
-  }, [db, setData, setIsRefreshing, setIsLoading, setError, postError, query, skip]);
+  }, [
+    db,
+    didPerformQuery,
+    setDidPerformQuery,
+    setData,
+    setIsRefreshing,
+    setIsLoading,
+    setError,
+    postError,
+    query,
+    skip,
+  ]);
 
   return {
     isLoading,
