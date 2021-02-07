@@ -11,7 +11,7 @@ interface DividerProps {
   vertical?: boolean;
 }
 
-export const Divider = ({vertical, style}: DividerProps) => {
+export const Divider = ({vertical, style = 'full'}: DividerProps) => {
   const theme = useTheme<Theme>();
 
   return (

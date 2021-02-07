@@ -76,7 +76,7 @@ export const useAddRatingDetailsQuery = ({
       FROM
         Rating
       JOIN
-        Notebook ON Notebook.id == Rating.notebook_id;
+        Notebook ON Notebook.id == Rating.notebook_id
       WHERE Rating.id == ${ratingId};
     `,
   });

@@ -45,8 +45,8 @@ function getIconSize(size: IconSize): number {
     case 'header':
       return 24;
     case 'medium':
-      return 32;
+      return 24;
     case 'large':
-      return 48;
+      return 32;
   }
 }

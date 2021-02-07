@@ -1,9 +1,9 @@
 import React, {useCallback} from 'react';
-import {Pressable, ScrollView} from 'react-native';
+import {Button, Pressable, ScrollView} from 'react-native';
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
-import {Box, Text} from 'shared/components';
+import {Box, IconButton, Text} from 'shared/components';
 import {Notebook} from 'shared/data/local/schema';
 
 import {HomeStackParamList} from '../routes';
@@ -35,7 +35,7 @@ export const NotebookSummaryContainer = ({notebook, isFirstItem, isLastItem}: Pr
 
   const onPressRating = useCallback(
     (ratingId?: number) => {
-      if (ratingId !== undefined) {
+      if (ratingId !== undefined && ratingId !== null) {
         navigation.navigate('AddRating', {screen: 'Edit', params: {ratingId: ratingId}});
       } else {
         navigation.navigate('AddRating', {screen: 'Add', params: {notebookId: notebook.id}});
@@ -43,6 +43,8 @@ export const NotebookSummaryContainer = ({notebook, isFirstItem, isLastItem}: Pr
     },
     [navigation, notebook],
   );
+
+  const hasRatings = notebook.ratings.length > 0;
 
   return (
     <Pressable onPress={openNotebookDetails}>
@@ -58,30 +60,47 @@ export const NotebookSummaryContainer = ({notebook, isFirstItem, isLastItem}: Pr
             borderBottomLeftRadius={bottomBorderRadius}
             borderBottomRightRadius={bottomBorderRadius}
           >
-            <Text variant="subheader" margin="standard">
-              {notebook.title}
-            </Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <RatingSummaryView onPress={onPressRating} supportsImages={notebook.hasImages} placeholder />
-              {notebook.ratings.slice(0, MAX_RATINGS_PREVIEW).map((rating, index) => (
-                <Box
-                  key={rating.id}
-                  marginRight={
-                    index === MAX_RATINGS_PREVIEW - 1 || index === notebook.ratings.length - 1 ? 'standard' : undefined
-                  }
-                >
-                  <RatingSummaryView
+            <Box flexDirection="row" justifyContent="space-between" alignItems="center" margin="standard">
+              <Text variant="subheader" marginRight="standard">
+                {notebook.title}
+              </Text>
+              <Pressable onPress={() => onPressRating()}>
+                {({pressed: addRatingPressed}) => (
+                  <Text color={addRatingPressed ? 'textSecondary' : 'textPrimary'} variant="caption">
+                    Add rating
+                  </Text>
+                )}
+              </Pressable>
+            </Box>
+
+            {hasRatings ? (
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {notebook.ratings.slice(0, MAX_RATINGS_PREVIEW).map((rating, index) => (
+                  <Box
                     key={rating.id}
-                    id={rating.id}
-                    value={rating.value}
-                    title={rating.title}
-                    imageUrl={rating.imageUrl}
-                    onPress={onPressRating}
-                    supportsImages={notebook.hasImages}
-                  />
-                </Box>
-              ))}
-            </ScrollView>
+                    marginRight={
+                      index === MAX_RATINGS_PREVIEW - 1 || index === notebook.ratings.length - 1
+                        ? 'standard'
+                        : undefined
+                    }
+                  >
+                    <RatingSummaryView
+                      key={rating.id}
+                      id={rating.id}
+                      value={rating.value}
+                      title={rating.title}
+                      imageUrl={rating.imageUrl}
+                      onPress={onPressRating}
+                      supportsImages={notebook.hasImages}
+                    />
+                  </Box>
+                ))}
+              </ScrollView>
+            ) : (
+              <Text variant="body" paddingHorizontal="standard" paddingBottom="standard">
+                No ratings added
+              </Text>
+            )}
           </Box>
         );
       }}

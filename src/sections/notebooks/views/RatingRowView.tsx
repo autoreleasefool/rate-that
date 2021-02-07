@@ -60,7 +60,7 @@ export const RatingRowView = ({updatedAt, value, imageUrl, title, isFirstItem, i
               <Icon name="noImage" color="white" size="medium" />
             </Box>
           )}
-          <Box flexDirection="column" margin="small">
+          <Box flexDirection="column" margin="small" flex={1}>
             <Text variant="body" fontWeight="bold">
               {title}
             </Text>
