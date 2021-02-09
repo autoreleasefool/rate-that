@@ -3,7 +3,17 @@ import {FlatList} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Box, Divider, FastImage, Form, FormElement, HeaderButton, SearchBar, TextField} from 'shared/components';
+import {
+  Box,
+  Divider,
+  FastImage,
+  Form,
+  FormElement,
+  HeaderButton,
+  LoadingIndicator,
+  SearchBar,
+  TextField,
+} from 'shared/components';
 import {useMovieSearch} from 'shared/data/tmdb/hooks/useMovieSearch';
 import {Movie} from 'shared/data/tmdb/schema';
 import {formatTitle} from 'shared/data/tmdb/util/movieUtil';
@@ -36,7 +46,7 @@ interface Props {
 
 export const AddRatingScreen = ({navigation, route}: Props) => {
   const saveRating = useSaveRating();
-  const {data} = useAddRatingDetailsQuery({
+  const {data, isLoading} = useAddRatingDetailsQuery({
     ratingId: 'ratingId' in route.params ? route.params.ratingId : undefined,
     notebookId: 'notebookId' in route.params ? route.params.notebookId : undefined,
   });
@@ -110,6 +120,14 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
   const isCreatingRating = !('ratingId' in route.params);
   const showMovieSearch = data?.notebook.type === NotebookType.MOVIES;
   const imageUrl = movie?.basePosterPath ? {basePosterPath: movie.basePosterPath} : undefined;
+
+  if (isLoading) {
+    return (
+      <Box flex={1}>
+        <LoadingIndicator />
+      </Box>
+    );
+  }
 
   return (
     <Box flex={1} backgroundColor="background">

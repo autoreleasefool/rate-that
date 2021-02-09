@@ -30,20 +30,11 @@ export const useBaseQuery = <T>({query, skip}: BaseQueryProps): BaseQueryResult<
     }
   }, [setDidPerformQuery, query]);
 
-  const postError = useCallback(
-    (err: Error) => {
-      setError(err);
-      setIsLoading(false);
-    },
-    [setError, setIsLoading],
-  );
-
   const refresh = useCallback(() => {
     setIsRefreshing(true);
-    setIsLoading(true);
     setError(undefined);
     setDidPerformQuery(false);
-  }, [setIsRefreshing, setIsLoading, setError, setDidPerformQuery]);
+  }, [setIsRefreshing, setError, setDidPerformQuery]);
 
   useEffect(() => {
     if (!db || didPerformQuery || skip) {
@@ -56,7 +47,7 @@ export const useBaseQuery = <T>({query, skip}: BaseQueryProps): BaseQueryResult<
         setData(result.rows.raw() as any);
         setError(undefined);
       } catch (err) {
-        postError(err);
+        setError(err);
       }
       setIsLoading(false);
       setIsRefreshing(false);
@@ -64,18 +55,7 @@ export const useBaseQuery = <T>({query, skip}: BaseQueryProps): BaseQueryResult<
 
     setDidPerformQuery(true);
     performFetch();
-  }, [
-    db,
-    didPerformQuery,
-    setDidPerformQuery,
-    setData,
-    setIsRefreshing,
-    setIsLoading,
-    setError,
-    postError,
-    query,
-    skip,
-  ]);
+  }, [db, didPerformQuery, setDidPerformQuery, setData, setIsRefreshing, setIsLoading, setError, query, skip]);
 
   return {
     isLoading,

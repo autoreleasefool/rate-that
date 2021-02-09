@@ -6,6 +6,7 @@ export {Icon, IconName, IconSize} from './Icon';
 export {IconButton} from './IconButton';
 export {FastImage} from './FastImage';
 export {Form, FormElement} from './Form';
+export {LoadingIndicator} from './LoadingIndicator';
 export {SearchBar} from './SearchBar';
 export {Text} from './Text';
 export {TextField} from './TextField';

@@ -3,7 +3,7 @@ import {FlatList, RefreshControl} from 'react-native';
 import {CompositeNavigationProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
-import {Box, Divider, EmptyStateView, HeaderButton, SearchBar} from 'shared/components';
+import {Box, Divider, EmptyStateView, HeaderButton, LoadingIndicator, SearchBar} from 'shared/components';
 import {useEventBusConsumer} from 'shared/util/EventBus';
 import {useResetDatabase} from 'shared/data/local/hooks/useResetDatabase';
 import {useDebounce} from 'shared/util/useDebounce';
@@ -27,7 +27,7 @@ export const HomeScreen = ({navigation}: Props) => {
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce({value: query, delay: 400});
 
-  const {isRefreshing, data: notebooks, refresh} = useHomeQuery({filter: debouncedQuery});
+  const {isRefreshing, isLoading, data: notebooks, refresh} = useHomeQuery({filter: debouncedQuery});
 
   useEventBusConsumer({
     eventIds: ['AddNotebook', 'DeleteNotebook', 'AddRating', 'EditRating', 'ResetDatabase'],
@@ -42,6 +42,14 @@ export const HomeScreen = ({navigation}: Props) => {
       ),
     });
   }, [navigation, resetDb]);
+
+  if (isLoading) {
+    return (
+      <Box flex={1}>
+        <LoadingIndicator />
+      </Box>
+    );
+  }
 
   return (
     <Box flex={1} backgroundColor="background">

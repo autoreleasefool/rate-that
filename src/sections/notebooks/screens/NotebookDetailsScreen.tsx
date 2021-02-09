@@ -1,10 +1,10 @@
-import React, {useCallback, useLayoutEffect, useState} from 'react';
+import React, {useCallback, useLayoutEffect, useMemo, useState} from 'react';
 import {Alert, FlatList, RefreshControl} from 'react-native';
 import {CompositeNavigationProp, RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from 'navigation/routes';
 import {HomeStackParamList} from 'sections/home/routes';
-import {Box, Divider, EmptyStateView, HeaderButton, SearchBar, Text} from 'shared/components';
+import {Box, Divider, EmptyStateView, HeaderButton, LoadingIndicator, SearchBar, Text} from 'shared/components';
 import {useEventBusConsumer} from 'shared/util/EventBus';
 import {useDebounce} from 'shared/util/useDebounce';
 import {ListButton} from 'shared/components/ListButton';
@@ -27,7 +27,10 @@ export const NotebookDetailsScreen = ({navigation, route}: Props) => {
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce({value: query, delay: 400});
 
-  const {data, isRefreshing, refresh} = useNotebookDetailsQuery({id: route.params.notebookId, filter: debouncedQuery});
+  const {data, isLoading, isRefreshing, refresh} = useNotebookDetailsQuery({
+    id: route.params.notebookId,
+    filter: debouncedQuery,
+  });
 
   useEventBusConsumer({eventIds: ['AddRating', 'EditRating'], observer: refresh});
 
@@ -58,6 +61,22 @@ export const NotebookDetailsScreen = ({navigation, route}: Props) => {
     ]);
   }, [navigation, deleteNotebook, route.params.notebookId, data?.title]);
 
+  const {totalRatings, averageRating} = useMemo(() => {
+    const total: number = data?.ratings ? data.ratings.length : 0;
+    const average: number =
+      data?.ratings && data?.ratings.length > 0 ? data.ratings.reduce((sum, next) => sum + next.value, 0) / total : 0;
+
+    return {totalRatings: total, averageRating: average};
+  }, [data?.ratings]);
+
+  if (isLoading) {
+    return (
+      <Box flex={1}>
+        <LoadingIndicator />
+      </Box>
+    );
+  }
+
   return (
     <Box flex={1} backgroundColor="background">
       <SearchBar query={query} placeholder={'Search'} onChange={setQuery} />
@@ -79,7 +98,11 @@ export const NotebookDetailsScreen = ({navigation, route}: Props) => {
               subtitle={debouncedQuery.length === 0 ? undefined : 'Try another search, or clear the current search'}
             />
           }
-          ListHeaderComponent={<ListHeader totalRatings={24} averageRating={1.4} />}
+          ListHeaderComponent={
+            data?.ratings && data.ratings.length > 0 ? (
+              <ListHeader totalRatings={totalRatings} averageRating={averageRating} />
+            ) : null
+          }
           ListFooterComponent={<ListFooter onDelete={onDelete} />}
         />
       </Box>
@@ -94,20 +117,28 @@ interface ListHeaderProps {
 
 const ListHeader = ({totalRatings, averageRating}: ListHeaderProps) => {
   return (
-    <Box backgroundColor="cardBackground" borderRadius="large" marginTop="standard">
-      <Box paddingVertical="small" paddingHorizontal="standard" flexDirection="row" justifyContent="space-between">
-        <Text variant="body" fontWeight="bold">
-          Total ratings
-        </Text>
-        <Text variant="body">24</Text>
+    <Box marginTop="standard">
+      <Text variant="caption" textTransform="uppercase">
+        Details
+      </Text>
+      <Box backgroundColor="cardBackground" borderRadius="large" marginTop="standard">
+        <Box paddingVertical="small" paddingHorizontal="standard" flexDirection="row" justifyContent="space-between">
+          <Text variant="body" fontWeight="bold">
+            Total ratings
+          </Text>
+          <Text variant="body">{totalRatings}</Text>
+        </Box>
+        <Divider />
+        <Box paddingVertical="small" paddingHorizontal="standard" flexDirection="row" justifyContent="space-between">
+          <Text variant="body" fontWeight="bold">
+            Average rating
+          </Text>
+          <Text variant="body">{averageRating.toFixed(1)}</Text>
+        </Box>
       </Box>
-      <Divider />
-      <Box paddingVertical="small" paddingHorizontal="standard" flexDirection="row" justifyContent="space-between">
-        <Text variant="body" fontWeight="bold">
-          Average rating
-        </Text>
-        <Text variant="body">7.2</Text>
-      </Box>
+      <Text variant="caption" marginTop="standard" textTransform="uppercase">
+        Ratings
+      </Text>
     </Box>
   );
 };
