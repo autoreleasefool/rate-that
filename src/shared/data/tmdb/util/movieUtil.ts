@@ -2,9 +2,13 @@ import {format, parse} from 'date-fns';
 import {ImageWidth, Movie} from 'shared/data/tmdb/schema';
 
 export function formatTitle(movie: Movie): string {
-  const releaseDate = parse(movie.releaseDate, 'yyyy-MM-dd', new Date());
-  const formattedDate = format(releaseDate, 'yyyy');
-  return `${movie.title} (${formattedDate})`;
+  if (movie.releaseDate) {
+    const releaseDate = parse(movie.releaseDate, 'yyyy-MM-dd', new Date());
+    const formattedDate = format(releaseDate, 'yyyy');
+    return `${movie.title} (${formattedDate})`;
+  }
+
+  return `${movie.title} (N/A)`;
 }
 
 export function formatOverview(movie: Movie): string {

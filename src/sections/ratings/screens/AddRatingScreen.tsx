@@ -113,7 +113,9 @@ export const AddRatingScreen = ({navigation, route}: Props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <HeaderButton onPress={onSave} title="Save" disabled={ratingTitle.length === 0} />,
+      headerRight: () => (
+        <HeaderButton onPress={onSave} title="Save" disabled={ratingTitle.length === 0 && movie === undefined} />
+      ),
     });
   });
 
